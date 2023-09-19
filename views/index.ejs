@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Demo MVC App</title>
+</head>
+
+<body>
+  <h1>Dữ liệu từ MySQL</h1>
+  <table border="1">
+    <tr>
+      <th>ID</th>
+      <th>Họ tên</th>
+      <th>Email</th>
+      <th>Phone</th>
+      <th>Action</th>
+    </tr>
+    <% data.forEach(item=> { %>
+      <tr>
+        <td>
+          <%= item.Id%>
+        </td>
+        <td>
+          <%= item.Name%>
+        </td>
+        <td>
+          <%= item.Email%>
+        </td>
+        <td>
+          <%= item.Phone%>
+        </td>
+        <td>
+          <button><a href="/edit/<%= item.Id%>">Sửa</a></button>
+        </td>
+      </tr>
+      <% }); %>
+  </table>
+  <br>
+  <button><a href="/add">Thêm mới</a></button>
+
+</body>
+
+</html>
