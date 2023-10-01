@@ -7,9 +7,9 @@
     <title>Document</title>
 
     <link rel="stylesheet" href="./css/header.css">
+    <link rel="stylesheet" href="./css/body.css">
 
- 
-     
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -22,8 +22,66 @@
             <div class="global-header-top-group font-500">
                 <div class="container d-flex align-items-center justify-content-between position-relative">
                     <div class="global-header-left d-flex align-items-center">
-                        <div class="item"> <i class="fa-solid fa-map-pin"></i>Địa chỉ liên hệ</div>
-                        <div class="item"> <i class="fa-solid fa-headset"></i> Hotline trực tuyến</div>
+                        <div class="item adress-hover"> <i class="fa-solid fa-map-pin"></i>Địa chỉ liên hệ
+                            <div class="header-content-holder-left">
+                            <div class="support-item">
+                                <p class="title">Địa chỉ</p>
+                                <a href="https://goo.gl/maps/8E9w4YJfEFf9hybN9" target="_blank">
+                                <i class="green fas fa-map-marker-alt"style="color: #29A07E;" aria-hidden="true"></i> 
+                                <span>Địa chỉ: Số 15 Yên Lãng, Phường Trung Liệt, Quận Đống Đa, Hà Nội</span>
+                                </a>
+                                <a href="tel:0349296461">
+                                <i class="green fas fa-phone-alt"style="color: #29A07E;" aria-hidden="true"></i>
+                                <span>Số điện thoại : 0349296461</span>
+                                </a>
+                                <a href="mailto:anh.nguyenhai213@gmail.com">
+                                <i class="green fas fa-envelope" style="color: #29A07E;"aria-hidden="true"></i>
+                                <span>Địa chỉ email : Lacdaushop@gmail.com</span>
+                                </a>
+                                <a href="javascript:void(0)">
+                                <span>Giờ mở cửa: 8h30 - 21h30</span>
+                                </a>
+                            </div>
+                            <div class="support-item">
+                                <div class="position-relative loaded" id="js-load-map"><iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3724.4854518231614!2d105.8163974!3d21.0132533!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab7d33b90bd5%3A0x9d9d6f5da32dda1e!2zMTUgUC5Zw6puIEzDo25nLCBUcnVuZyBMaeG7h3QsIMSQ4buRbmcgxJBhLCBIw6AgTuG7mWk!5e0!3m2!1svi!2s!4v1678960947364!5m2!1svi!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+                            </div>
+                        </div>
+                        </div>
+                        
+                        <div class="item hotline-hover"> <i class="fa-solid fa-headset"></i> Hotline trực tuyến
+                             <div class="header-content-holder-right">
+                                <div class="support-item">
+                                    <p class="title">Hotline</p>
+                            
+                                    <a href="tel:0349296461">
+                                        <i class="green fas fa-phone-alt" aria-hidden="true"></i>
+                                        <span>Số điện thoại : 0349296461</span>
+                                    </a>
+                            
+                                    <a href="mailto:anh.nguyenhai213@gmail.com">
+                                        <i class="green fas fa-envelope" aria-hidden="true"></i>
+                                        <span>Địa chỉ email : Lacdaushop@gmail.com</span>
+                                    </a>
+                                </div>
+
+                                <div class="support-item">
+                                    <p class="title">Phòng kinh doanh - Tư vấn</p>
+                            
+                                    <a href="tel:0349296461">
+                                        <i class="green fas fa-phone-alt" aria-hidden="true"></i>
+                                        <span>Hotline : 0349.296.461</span>
+                                    </a>
+                            
+                                    <a href="https://zalo.me/0349296461" target="_blank">
+                                        <i class="green fas fa-phone-alt" aria-hidden="true"></i>
+                                        <span   span>Zalo : 0349.296.461</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                       
+
                         <a href="https://shopee.vn/SA-35610180" class="title"> <i class="fa-brands fa-shopify"></i>
                             Shopee</a>
 
@@ -68,7 +126,28 @@
                             <input type="text" id="js-seach-input" name="q" placeholder="Bạn cần tìm gì?" value="" autocomplete="off" class="text-search">                        
                         </form>
                     </div>
-                    <div class="header-right-group">4</div>
+                    <div class="header-right-group">
+                        <div class="item">
+                            <i class="fa-solid fa-phone-volume fa-bounce" style="color: #29A07E;"></i>
+                            <a href="tel:0349.296.461" class="text font-700">
+                                <span span class="font-400">Hotline</span>
+                                <b>0349.296.461</b>
+                            </a>
+                        </div>
+                         <div class="item">
+                            <i class="fa-solid fa-bolt-lightning" style="color: #29A07E;"></i>
+                            <a href="https://www.messenger.com/t/1684408595122637" target="_blank" class="text font-500">Tư vấn trực tiếp</a>
+                        </div>
+                        <div class="item item-cart position-relative" id="js-header-cart">
+                            <i class="fa-solid fa-cart-shopping" style="color: #29A07E;"></i>
+                            <a href="" class="font-700">Giỏ hàng</a>
+                            <div class="header-cart-hover loaded" id="js-header-cart-holder"> 
+                                <b class="d-block text-center p-4">Có 0 sản phẩm trong giỏ hàng</b>
+                                <!-- Load time: 0.05728 seconds  / 2 mb-->
+                                <!-- Powered by Hura8 Cloud - 2.3, Released: 10-Aug-2021 / Website: www.hurasoft.vn -->
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
