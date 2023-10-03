@@ -267,7 +267,7 @@ img{
     position: absolute;
     /* width: 230px;
     height: 630px; */
-    background: bisque;
+    background: white;
     border-radius: 20px;
     left: 0;
     top: 100%;
@@ -298,7 +298,7 @@ img{
 }
 .header-menu-group .sub-menu {
     width: calc(1600px - 310px);
-    height: 840px;
+    height: 810px;
     left: 310px;
     font-size: 19px;
 }
@@ -307,7 +307,7 @@ img{
 .header-menu-group .sub-menu {
     display: none;
     position: absolute;
-    background: pink;
+    background: white;
     z-index: 4;
     overflow: auto;
     top: 0;
