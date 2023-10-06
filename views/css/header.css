@@ -489,6 +489,9 @@ a{
     color: black;
     font-weight: bold;
 }
+.item-cart a:hover{
+    color: #29A07E;
+}
 
 .item-cart:hover .header-cart-hover{
 display: block;

@@ -6,12 +6,27 @@ const dataModel = require('../models/dataModel');
 router.get('/', async (req, res) => {
   try {
     const data = await dataModel.getData(); // Gọi phương thức từ Model
-    res.render('index', { data }); // Hiển thị dữ liệu bằng template engine EJS
+    res.render('trang-chu', { data }); // Hiển thị dữ liệu bằng template engine EJS
   } catch (error) {
     console.error(error);
     res.status(500).send('Lỗi trong quá trình lấy dữ liệu');
   }
 });
+// Route để hiển thị trang chủ
+router.get('/trang-chu', (req, res) => {
+  res.render('trang-chu'); // Hiển thị trang thêm dữ liệu
+});
+
+// Route để hiển thị trang đăng nhập
+router.get('/dang-nhap', (req, res) => {
+  res.render('dang-nhap'); // Hiển thị trang thêm dữ liệu
+});
+// Route để hiển thị trang đăng ký
+router.get('/dang-ky', (req, res) => {
+  res.render('dang-ky'); // Hiển thị trang thêm dữ liệu
+});
+
+
 
 
 // Route để hiển thị trang thêm dữ liệu
