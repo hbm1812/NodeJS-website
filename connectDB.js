@@ -5,7 +5,7 @@ const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: '',
-  database: 'QLSV',
+  database: 'lacdaustore',
 });
 connection.connect(function (err) {
     if (err) {

@@ -5,7 +5,7 @@ const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: '',
-  database: 'QLSV',
+  database: 'lacdaustore',
 });
 
 connection.connect(function (err) {
@@ -19,12 +19,29 @@ connection.connect(function (err) {
 // Phương thức để lấy dữ liệu từ cơ sở dữ liệu
 function getData() {
   return new Promise((resolve, reject) => {
-    const query = 'SELECT * FROM student'; // Thay thế "ten_bang" bằng tên bảng của bạn
+    const query = 'SELECT * FROM users'; // Thay thế "ten_bang" bằng tên bảng của bạn
     connection.query(query, (error, results) => {
       if (error) {
         reject(error);
         return;
       }
+      resolve(results);
+    });
+  });
+}
+
+
+
+// Phương thức để lấy dữ liệu từ cơ sở dữ liệu
+function getDataUsers(data) {
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT * FROM users WHERE email=? and password=?'; // Thay thế "ten_bang" và "column1, column2" bằng tên bảng và các cột của bạn
+    connection.query(query, [data.email, data.password], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      // console.log(results);
       resolve(results);
     });
   });
@@ -48,4 +65,4 @@ function addData(data) {
 
   
 
-module.exports = { getData, addData };
+module.exports = { getData, addData, getDataUsers };

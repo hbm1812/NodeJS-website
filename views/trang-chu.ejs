@@ -107,8 +107,15 @@
                     <div class="global-header-right">
                         <a href="/tin-tuc" class="title"> <i class="fa-solid fa-bullhorn"></i> Tin tức</a>
                         <i class="fa-solid fa-circle-user"></i>
+                        <% if(typeof data != "undefined" ){ %>
+                            <a href="/tin-tuc" class="title"> <i class="fa-solid fa-bullhorn"></i> <%= data[0].username %></a>
+                        <% }else{ %>
+
                         <a href="/dang-ky">Đăng ký</a> &nbsp;/&nbsp;
                         <a href="/dang-nhap">Đăng nhập</a>
+                        <% } %>
+                        
+                        
                     </div>
                 </div>
 
