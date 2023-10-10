@@ -33,10 +33,10 @@ function getData() {
 
 
 // Phương thức để lấy dữ liệu từ cơ sở dữ liệu
-function getDataUsers(data) {
+function getDataUsers(email, password) {
   return new Promise((resolve, reject) => {
     const query = 'SELECT * FROM users WHERE email=? and password=?'; // Thay thế "ten_bang" và "column1, column2" bằng tên bảng và các cột của bạn
-    connection.query(query, [data.email, data.password], (error, results) => {
+    connection.query(query, [email, password], (error, results) => {
       if (error) {
         reject(error);
         return;

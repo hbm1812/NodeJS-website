@@ -17,27 +17,6 @@ router.get('/', async (req, res) => {
     res.status(500).send('Lỗi trong quá trình lấy dữ liệu');
   }
 });
-// Route để hiển thị trang chủ
-router.get('/trang-chu',async (req, res) => {
-  res.render('trang-chu'); // Hiển thị trang thêm dữ liệu
-  if (req.session.loggedin) {
-		// Output username
-		// response.send('Welcome back, ' + request.session.email + '!');
-        // connection.query('SELECT * FROM users WHERE email = ? ', [request.session.email], function(error, results, fields) {
-            
-        //     response.render('trang-chu',results);
-        // })
-        const data_user = await dataModel.getDataUsers(req.session.email,req.session.password);
-        console.log({data_user});
-        res.render('trang-chu',{data_user});
-        
-	} else {
-		// Not logged in
-		// response.send('Please login to view this page!');
-        res.render('trang-chu');
-	}
-	res.end();
-});
 
 // Route để hiển thị trang đăng nhập
 router.get('/dang-nhap', (req, res) => {
@@ -48,7 +27,7 @@ router.get('/dang-ky', (req, res) => {
   res.render('dang-ky'); // Hiển thị trang thêm dữ liệu
 });
 
-// http://localhost:3000/auth
+//login
 router.post('/dang-nhap', function(req, res) {
   const connection = mysql.createConnection({
     host     : 'localhost',
@@ -72,7 +51,7 @@ router.post('/dang-nhap', function(req, res) {
 				req.session.email = email;
         req.session.password=password;
 				// Redirect to home page
-        res.redirect('trang-chu');
+        res.redirect('/trang-chu');
 			} else {
 				res.send('Incorrect email and/or Password!');
 			}			
@@ -84,53 +63,61 @@ router.post('/dang-nhap', function(req, res) {
 	}
 });
 
-// // http://localhost:3000/home
-// router.get('/trang-chu', async(request, response)=> {
-// 	// If the user is loggedin
-// 	if (request.session.loggedin) {
-// 		// Output username
-// 		// response.send('Welcome back, ' + request.session.email + '!');
-//         // connection.query('SELECT * FROM users WHERE email = ? ', [request.session.email], function(error, results, fields) {
+// Route để hiển thị trang chủ
+router.get('/trang-chu',async (req, res) => {
+  
+  if (req.session.loggedin) {
+		// Output username
+		// response.send('Welcome back, ' + request.session.email + '!');
+        // connection.query('SELECT * FROM users WHERE email = ? ', [request.session.email], function(error, results, fields) {
             
-//         //     response.render('trang-chu',results);
-//         // })
-//         response.render('trang-chu',results);
+        //     response.render('trang-chu',results);
+        // })
+        const data_user = await dataModel.getDataUsers(req.session.email,req.session.password);
+        // console.log({data_user});
+        res.render('trang-chu',{data_user});
+
         
-// 	} else {
-// 		// Not logged in
-// 		// response.send('Please login to view this page!');
-//         response.render('trang-chu');
-// 	}
-// 	response.end();
-// });
+	} else {
+		// Not logged in
+		// response.send('Please login to view this page!');
+        res.render('trang-chu');
+	}
+	res.end();
+});
+
+//logout
+router.get('/dang-xuat', (req, res) => {
+  if (req.session.loggedin) {
+        // console.log({data_user});
+        req.session.loggedin = false;
+        res.redirect('/trang-chu');
+
+        
+	} else {
+        res.render('trang-chu');
+	}
+	res.end();
+});
 
 
 
+// Route để hiển thị trang tài khoản
+router.get('/tai-khoan',async  (req, res) => {
+  if (req.session.loggedin) {
 
+        const data_user = await dataModel.getDataUsers(req.session.email,req.session.password);
+        // console.log({data_user});
+        res.render('tai-khoan',{data_user});
 
-
-
-
-
-
-
-
-
-
-// // Route để xử lý yêu cầu đăng nhập
-// router.post('/dang-nhap', async (req, res) => {
-//   try {
-//     const { email, password } = req.body; // Lấy dữ liệu từ biểu mẫu gửi lên
-//     const data = { email,password }; 
-
-//     const data_users = await dataModel.getDataUsers(data); // Gọi phương thức từ Model để thêm dữ liệu
-//     res.redirect('/trang-chu'); // Chuyển hướng về trang chính sau khi thêm dữ liệu
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send('Lỗi trong quá trình đăng nhập');
-//   }
-// });
-
+        
+	} else {
+		// Not logged in
+		// response.send('Please login to view this page!');
+        res.render('trang-chu');
+	}
+	res.end();
+});
 
 
 // Route để hiển thị trang thêm dữ liệu
