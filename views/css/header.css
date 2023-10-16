@@ -280,6 +280,7 @@ img{
     display: flex;
     -webkit-box-align: center;
     align-items: center;
+    width: 100%;
 }
 
 .header-menu-group .item:first-child {

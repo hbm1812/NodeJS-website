@@ -63,6 +63,94 @@ function addData(data) {
   }
 
 
+   // Phương thức để thêm dữ liệu vào cơ sở dữ liệu
+function createAccount(data) {
+  return new Promise((resolve, reject) => {
+    const query = 'INSERT INTO users (username, email, password, authority_id) VALUES (?, ?, ?, ?)'; // Thay thế "ten_bang" và "column1, column2" bằng tên bảng và các cột của bạn
+    connection.query(query, [data.username, data.email, data.password, data.authority_id], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(results);
+    });
+  });
+}
+
+function createEmailInformation(data) {
+  return new Promise((resolve, reject) => {
+    const query = 'INSERT INTO information (email) VALUES (?)'; 
+    connection.query(query, [data.email], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(results);
+    });
+  });
+}
+
+function getInformation(email) {
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT * FROM information WHERE email=?;'
+    connection.query(query, [email], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      // console.log(results);
+      resolve(results);
+    });
+  });
+}
+
+function updateInformation(data) {
+  return new Promise((resolve, reject) => {
+    const query = 'UPDATE information SET address=?, province=?, phone=? WHERE email=?;'
+    connection.query(query, [data.address, data.province, data.phone, data.email], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      // console.log(results);
+      resolve(results);
+    });
+  });
+}
+
+function updateUsernameUsers(data) {
+  return new Promise((resolve, reject) => {
+    const query = 'UPDATE users SET username=? WHERE email=?;'
+    connection.query(query, [data.username, data.email], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      // console.log(results);
+      resolve(results);
+    });
+  });
+}
+
+function changePassword(data) {
+  return new Promise((resolve, reject) => {
+    const query = 'UPDATE users SET password=? WHERE email=?;'
+    connection.query(query, [data.newpassword, data.email], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      // console.log(results);
+      resolve(results);
+    });
+  });
+}
+
+
+
+
+
+
   
 
-module.exports = { getData, addData, getDataUsers };
+module.exports = { getData, addData, getDataUsers, createAccount, createEmailInformation, getInformation, updateInformation, updateUsernameUsers, changePassword};

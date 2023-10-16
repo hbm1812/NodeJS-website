@@ -105,10 +105,10 @@ router.get('/dang-xuat', (req, res) => {
 // Route để hiển thị trang tài khoản
 router.get('/tai-khoan',async  (req, res) => {
   if (req.session.loggedin) {
-
         const data_user = await dataModel.getDataUsers(req.session.email,req.session.password);
-        // console.log({data_user});
-        res.render('tai-khoan',{data_user});
+        let data_information = await dataModel.getInformation(req.session.email);
+        // console.log({data_user, data_information});
+        res.render('tai-khoan',{data_user, data_information});
 
         
 	} else {
@@ -119,11 +119,74 @@ router.get('/tai-khoan',async  (req, res) => {
 	res.end();
 });
 
+// Route register
+router.post('/dang-ky', async (req, res) => {
+  try {
+    let username = req.body.username;
+    let email = req.body.email;
+	  let password = req.body.password;
+    let authority_id =2;
+    // const { username, email, password } = req.body; // Lấy dữ liệu từ biểu mẫu gửi lên
+    let data = { username, email, password, authority_id };
+    await dataModel.createAccount(data); // Gọi phương thức từ Model để thêm dữ liệu
+    await dataModel.createEmailInformation(data);
+    res.redirect('/dang-nhap'); // Chuyển hướng về trang chính sau khi thêm dữ liệu
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Lỗi trong quá trình thêm dữ liệu');
+  }
+});
+
+
+//cập nhật thông tin
+router.post('/cap-nhat-thong-tin', async (req, res) => {
+  try {
+    let username = req.body.username;
+    let email = req.session.email;
+    let address = req.body.address;
+	  let province = req.body.province;
+    let phone = req.body.phone;
+    // const { username, email, password } = req.body; // Lấy dữ liệu từ biểu mẫu gửi lên
+    let data = { username, email, address, province, phone };
+    await dataModel.updateInformation(data);
+    await dataModel.updateUsernameUsers(data);
+
+    res.redirect('/tai-khoan'); 
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Lỗi trong quá trình thêm dữ liệu');
+  }
+});
+
+//đổi mật khẩu
+router.post('/doi-mat-khau', async (req, res) => {
+  try {
+    let currentpassword = req.body.currentpassword;
+    let newpassword = req.body.newpassword;
+    let renewpassword = req.body.renewpassword;
+    let email = req.session.email;
+
+    let data = { newpassword, email };
+    await dataModel.changePassword(data);
+    req.session.password=newpassword;
+    res.redirect('/tai-khoan');
+
+    
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Lỗi trong quá trình thêm dữ liệu');
+  }
+});
+
+
+
+
 
 // Route để hiển thị trang thêm dữ liệu
 router.get('/add', (req, res) => {
   res.render('add'); // Hiển thị trang thêm dữ liệu
 });
+
 // Route để xử lý yêu cầu thêm dữ liệu
 router.post('/add', async (req, res) => {
   try {
