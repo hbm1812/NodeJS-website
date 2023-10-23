@@ -23,7 +23,6 @@ body {
 .row {
     margin: 0 -6px;
     display: flex;
-    flex-wrap: wrap;
 }
 .col-6{
     padding: 0 6px;
@@ -499,7 +498,7 @@ input {
 
 .row {
     display: flex;
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
 }
 
 .col-3{

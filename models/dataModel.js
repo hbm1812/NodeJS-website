@@ -104,6 +104,7 @@ function getInformation(email) {
   });
 }
 
+
 function updateInformation(data) {
   return new Promise((resolve, reject) => {
     const query = 'UPDATE information SET address=?, province=?, phone=? WHERE email=?;'
@@ -147,10 +148,109 @@ function changePassword(data) {
 }
 
 
+function createNewAccount(data) {
+  return new Promise((resolve, reject) => {
+    const query = 'INSERT INTO users (username, email, password, authority_id) VALUES (?, ?, ?, ?)'; // Thay thế "ten_bang" và "column1, column2" bằng tên bảng và các cột của bạn
+    connection.query(query, [data.username, data.email, data.password, data.authority_id], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(results);
+    });
+  });
+}
+
+
+
+function selectOneAccountById(id) {
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT * FROM users WHERE id=?;'
+    connection.query(query, [id], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      // console.log(results);
+      resolve(results);
+    });
+  });
+}
+
+
+function updateUsers(data) {
+  return new Promise((resolve, reject) => {
+    const query = 'UPDATE users SET username=?, email=?, password=?, authority_id=? WHERE id=?;'
+    connection.query(query, [data.username, data.email, data.password, data.authority_id, data.id], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      // console.log(results);
+      resolve(results);
+    });
+  });
+}
+function updateEmailInformation(data_update_infor) {
+  return new Promise((resolve, reject) => {
+    const query = 'UPDATE information SET email=? WHERE id=?;'
+    connection.query(query, [data_update_infor.email, data_update_infor.id], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      // console.log(results);
+      resolve(results);
+    });
+  });
+}
+
+function getIdIdformation(email) {
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT id FROM information WHERE email=?;'
+    connection.query(query, [email], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      // console.log(results);
+      resolve(results);
+    });
+  });
+}
+
+function deleteUsers(email) {
+  return new Promise((resolve, reject) => {
+    const query = 'DELETE FROM users WHERE email=?;'
+    connection.query(query, [email], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      // console.log(results);
+      resolve(results);
+    });
+  });
+}
+
+function deleteInformation(email) {
+  return new Promise((resolve, reject) => {
+    const query = 'DELETE FROM information WHERE email=?;'
+    connection.query(query, [email], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      // console.log(results);
+      resolve(results);
+    });
+  });
+}
+
 
 
 
 
   
 
-module.exports = { getData, addData, getDataUsers, createAccount, createEmailInformation, getInformation, updateInformation, updateUsernameUsers, changePassword};
+module.exports = {connection, getData, addData, getDataUsers, createAccount, createEmailInformation, getInformation, updateInformation, updateUsernameUsers, changePassword, createNewAccount, selectOneAccountById, updateUsers, updateEmailInformation, getIdIdformation, deleteUsers, deleteInformation};
