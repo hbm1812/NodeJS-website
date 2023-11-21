@@ -247,10 +247,133 @@ function deleteInformation(email) {
   });
 }
 
+function getDataLotChuot() {
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT * FROM lot_chuot ORDER BY gia_tien ASC, ma_san_pham DESC'; 
+    connection.query(query, (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(results);
+    });
+  });
+}
+
+function getDataLotChuot_chuDe(chu_de_key) {
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT * FROM lot_chuot WHERE chu_de_key=? ORDER BY gia_tien ASC, ma_san_pham DESC'; 
+    connection.query(query,[chu_de_key], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(results);
+    });
+  });
+}
+
+function selectOneLot_chuotById(id) {
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT * FROM lot_chuot WHERE id=?;'
+    connection.query(query, [id], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      // console.log(results);
+      resolve(results);
+    });
+  });
+}
+
+function selectOneLot_chuotByMaSanPham(ma_san_pham) {
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT * FROM lot_chuot WHERE ma_san_pham=?;'
+    connection.query(query, [ma_san_pham], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      // console.log(results);
+      resolve(results);
+    });
+  });
+}
+
+
+function addToCart(ma_san_pham, email, anh, ten, gia_tien) {
+  return new Promise((resolve, reject) => {
+    const query = 'INSERT INTO cart(ma_san_pham,email, anh, ten, gia_tien) VALUES (?,?,?,?,?)'; 
+    connection.query(query, [ma_san_pham,email,anh, ten, gia_tien], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(results);
+    });
+  });
+}
+
+
+function showCart(email) {
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT * from cart WHERE email=?'; 
+    connection.query(query, [email], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(results);
+    });
+  });
+}
+
+function countCart(email) {
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT count(*) as so_luong from cart  WHERE email=?'; 
+    connection.query(query, [email], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(results);
+    });
+  });
+}
+
+function sumCart(email) {
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT sum(gia_tien) as gia_tien from cart  WHERE email=?'; 
+    connection.query(query, [email], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(results);
+    });
+  });
+}
+
+function findProductCart(email, ma_san_pham) {
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT count(*) as number from cart WHERE email=? and ma_san_pham=?'; 
+    connection.query(query, [email, ma_san_pham], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(results);
+    });
+  });
+}
+
+
+
 
 
 
 
   
 
-module.exports = {connection, getData, addData, getDataUsers, createAccount, createEmailInformation, getInformation, updateInformation, updateUsernameUsers, changePassword, createNewAccount, selectOneAccountById, updateUsers, updateEmailInformation, getIdIdformation, deleteUsers, deleteInformation};
+module.exports = {connection, getData, addData, getDataUsers, createAccount, createEmailInformation, getInformation, updateInformation, updateUsernameUsers, changePassword, createNewAccount, selectOneAccountById, updateUsers, updateEmailInformation, getIdIdformation, deleteUsers, deleteInformation, getDataLotChuot, getDataLotChuot_chuDe, selectOneLot_chuotById, selectOneLot_chuotByMaSanPham,addToCart,showCart,countCart,sumCart,findProductCart};

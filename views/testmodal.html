@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="./css/PopypModal.css">
+</head>
+<body>
+    <div id="wrapper">
+        <!-- <h1>Tạo Modal với html, css, js</h1>
+        <p>Lorem ipsum</p> -->
+        <button id="btn-open-modal" >Click Here To Open Modal</button>
+        
+
+        <!--Modal -->
+        <div id="modal-container">
+            <div class="modal" id="modal-demo">
+                <div class="modal-header">
+                    <h3>Modal Title</h3>
+                    <button id="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="modal-body">
+                    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quod saepe facilis sunt. Pariatur repellendus ipsum illum aliquam sunt mollitia iusto veritatis esse quaerat? Consectetur obcaecati error asperiores omnis necessitatibus voluptates?</p>
+                </div>
+            </div>
+        </div>
+
+        <!--End Modal -->
+    </div>
+
+    <script>
+        const btn_open_modal = document.getElementById('btn-open-modal');
+        const btn_close_modal = document.getElementById('btn-close-modal');
+        const modal_container = document.getElementById('modal-container');
+        const modal_demo = document.getElementById('modal-demo');
+        btn_open_modal.addEventListener('click', ()=>{
+            // Add class .show
+            modal_container.classList.add('show');
+        });
+
+        btn_close_modal.addEventListener('click', ()=>{
+            // Add class .show
+            modal_container.classList.remove('show');
+        });
+
+        modal_container.addEventListener('click',(e)=>{
+            if(!modal_demo.contains(e.target)){
+                btn_close_modal.click();
+            }
+            console.log(e.target);
+           
+        });
+
+
+
+    </script>
+    
+</body>
+</html>

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Trang chủ</title>
 
     <link rel="stylesheet" href="./css/header.css">
     <link rel="stylesheet" href="./css/body.css">
@@ -704,7 +704,7 @@
 
                     <div class="header-search-group">
                         <form method="get" action="/tim" name="search" class="search-input-group bg-white position-relative">
-                            <button type="submit" class="btn-search icons"><i class="fa-solid fa-magnifying-glass"></i></button>
+                            <button type="submit" class="btn-search"><i class="fa-solid fa-magnifying-glass"></i></button>
                             <input type="text" id="js-seach-input" name="q" placeholder="Bạn cần tìm gì?" value="" autocomplete="off" class="text-search">                        
                         </form>
                     </div>
@@ -720,13 +720,69 @@
                             <i class="fa-solid fa-bolt-lightning" style="color: #29A07E;"></i>
                             <a href="https://www.messenger.com/t/1684408595122637" target="_blank" class="text font-500">Tư vấn trực tiếp</a>
                         </div>
-                        <div class="item item-cart position-relative" id="js-header-cart">
-                            <i class="fa-solid fa-cart-shopping" style="color: #29A07E;"></i>
-                            <a href="" class="font-700">Giỏ hàng</a>
-                            <div class="header-cart-hover loaded" id="js-header-cart-holder"> 
-                                <b class="d-block text-center p-4">Có 0 sản phẩm trong giỏ hàng</b>
-                                <!-- Load time: 0.05728 seconds  / 2 mb-->
-                                <!-- Powered by Hura8 Cloud - 2.3, Released: 10-Aug-2021 / Website: www.hurasoft.vn -->
+                        <div class="item item-cart position-relative" id="cart">
+                            <a href="/cart" class="icons icon-cart">
+                                <% if(typeof data_user != "undefined" ){ %>
+                                <span class="cart-count js-cart-count" id="cart-count"><%= count_cart[0].so_luong %></span>
+                                <% }else{ %>
+                                <span class="cart-count js-cart-count" id="cart-count">0</span>
+                                <% } %>
+                            </a>
+                            <a href="/cart" class="font-700">Giỏ hàng</a>
+                            <div class="header-cart-hover loaded" id="js-header-cart-holder">
+                                <% if(typeof data_cart != "undefined" ){ %>
+                                    <div class="cart-items-holder">
+                                        <% data_cart.forEach(item=> { %>
+                                        <div class="cart-item">
+                                            <a href="/pad-33-sleep-bear" class="cart-img">
+                                                <img src="<%= item.anh%>">
+                                                
+                                            </a>
+                                            <div class="cart-text">
+                                                <a href="/pad-33-sleep-bear" class="d-block font-700" style="margin-bottom: 5px"><%= item.ten%></a>
+                                            
+                                                <p class="m-0 d-flex justify-content-between">
+                                                    <b>x1</b>
+                                                    <b class="red"><%= item.gia_tien%> đ</b>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <% }); %>
+                                        <!-- <div class="cart-item">
+                                            <a href="/pad-22-many-cat" class="cart-img">
+                                                <img src="./assets/media/product/250-1391-53424e5247a21b79417d566bc2869499.jpg">
+                                                
+                                            </a>
+                                            <div class="cart-text">
+                                                <a href="/pad-22-many-cat" class="d-block font-700" style="margin-bottom: 5px; justify-content: start;">PAD 22 MANY CAT</a>
+                                                
+                                                  
+                                              
+                                                <p class="m-0 d-flex justify-content-between">
+                                                    <b>x1</b>
+                                                    <b class="red">35.000 đ</b>
+                                                </p>
+                                            </div>
+                                        </div> -->
+                                    </div>
+                                    <div class="cart-price-hover">
+                                        <p class="grey font-300 m-0 text-right">
+                                            Tổng tiền hàng
+                                            (<span class="red"><span class="js-cart-count"><%= count_cart[0].so_luong %></span> sản phẩm</span>):
+                                            <span class="red text-18 font-600" style="vertical-align: top;">
+                                                <%= tong_gia_tien[0].gia_tien %>.000đ
+                                                
+                                            </span>
+                                        </p>
+                                
+                                        <a href="/cart" class="d-block text-center text-white btn-goCart"> THANH TOÁN NGAY </a>
+                                    </div>
+
+                                <% } else{ %>
+                                    <b class="d-block text-center p-4">Có 0 sản phẩm trong giỏ hàng</b>
+                               
+                                <% } %>
+                                    
                             </div>
                         </div>
                     </div>

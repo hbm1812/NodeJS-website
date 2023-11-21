@@ -96,8 +96,11 @@ router.get('/trang-chu', async (req, res) => {
   if (req.session.loggedin) {
 
     const data_user = await dataModel.getDataUsers(req.session.email, req.session.password);
+    const data_cart = await dataModel.showCart(req.session.email);
+    const count_cart = await dataModel.countCart(req.session.email);
+    const tong_gia_tien = await dataModel.sumCart(req.session.email);
     // console.log({data_user});
-    res.render('trang-chu', { data_user });
+    res.render('trang-chu', { data_user,data_cart,count_cart,tong_gia_tien });
 
 
   } else {
@@ -305,7 +308,7 @@ router.get('/sua-tai-khoan', async (req, res) => {
 });
 
 
-// them tai khoan
+
 router.post('/sua-tai-khoan', async (req, res) => {
   try {
     let username = req.body.username;
@@ -324,7 +327,7 @@ router.post('/sua-tai-khoan', async (req, res) => {
     await dataModel.updateInformation(data_update_infor);
 
     // let users_id = await dataModel.getIdUsersByEmail(email);
-    res.redirect('/sua-tai-khoan?id=' + req.body.id); // Chuyển hướng về trang chính sau khi thêm dữ liệu
+    res.redirect('/sua-tai-khoan?id=' + req.body.id); 
   } catch (error) {
     console.error(error);
     res.status(500).send('Lỗi trong quá trình thêm dữ liệu');
@@ -347,45 +350,145 @@ router.get('/xoa-tai-khoan', async (req, res) => {
 });
 
 
-// Route để hiển thị trang chủ
+// Route để hiển thị trang lot chuot
 router.get('/lot-chuot', async (req, res) => {
+  const data_LotChuot = await dataModel.getDataLotChuot();
 
   if (req.session.loggedin) {
-
     const data_user = await dataModel.getDataUsers(req.session.email, req.session.password);
-    // console.log({data_user});
-    res.render('lot-chuot', { data_user });
+    const data_cart = await dataModel.showCart(req.session.email);
+    const count_cart = await dataModel.countCart(req.session.email);
+    const tong_gia_tien = await dataModel.sumCart(req.session.email);
+    // console.log({data_LotChuot});
+    res.render('lot-chuot', { data_user, data_LotChuot, data_cart, count_cart, tong_gia_tien });
 
 
   } else {
     // Not logged in
     // response.send('Please login to view this page!');
-    res.render('lot-chuot');
+    res.render('lot-chuot', {data_LotChuot});
   }
   res.end();
 });
 
 
+router.get('/lot-chuot-chu-de', async (req, res) => {
+  let chu_de_key_current = req.query.chu_de;
+  const data_LotChuot = await dataModel.getDataLotChuot_chuDe(chu_de_key_current);
+  if (req.session.loggedin) {
+    const data_user = await dataModel.getDataUsers(req.session.email, req.session.password);
+    
+    // console.log({data_LotChuot});
+    res.render('lot-chuot', { data_user, data_LotChuot});
 
 
-
-// Route để hiển thị trang thêm dữ liệu
-router.get('/add', (req, res) => {
-  res.render('add'); // Hiển thị trang thêm dữ liệu
+  } else {
+    //  console.log({chu_de_key_current});
+    res.render('lot-chuot', {data_LotChuot});
+  }
+  res.end();
 });
 
-// Route để xử lý yêu cầu thêm dữ liệu
-router.post('/add', async (req, res) => {
+router.get('/chi-tiet-lot-chuot', async (req, res) => {
+  var id = req.query.id;
+  req.session.id = id;
+  let data_one_lot_chuot = await dataModel.selectOneLot_chuotById(id);
+  if (req.session.loggedin) {
+    
+    const data_user = await dataModel.getDataUsers(req.session.email, req.session.password);
+    const data_cart = await dataModel.showCart(req.session.email);
+    const count_cart = await dataModel.countCart(req.session.email);
+    const tong_gia_tien = await dataModel.sumCart(req.session.email);
+    // console.log(data_cart);
+    // console.log(count_cart);
+    // console.log(tong_gia_tien);
+    res.render('chi-tiet-lot-chuot', { data_user, data_one_lot_chuot, data_cart, count_cart, tong_gia_tien });
+
+
+  } else {
+    // Not logged in
+    // console.log({data_one_lot_chuot});
+    res.render('chi-tiet-lot-chuot', { data_one_lot_chuot });
+    // response.send('Please login to view this page!');
+  }
+  res.end();
+});
+
+
+router.get('/cart', async (req, res) => {
+  if (req.session.loggedin) {
+    const data_cart =await dataModel.showCart(req.session.email);
+    const data_user = await dataModel.getDataUsers(req.session.email, req.session.password);
+    // console.log({data_user});
+    const count_cart = await dataModel.countCart(req.session.email);
+    const tong_gia_tien = await dataModel.sumCart(req.session.email);
+    res.render('cart', { data_user,data_cart,count_cart, tong_gia_tien });
+
+
+  } else {
+    // Not logged in
+    var ma_san_pham = req.query.ma_san_pham;
+    const data_product = await dataModel.selectOneLot_chuotByMaSanPham(ma_san_pham);
+    // response.send('Please login to view this page!');
+    res.render('cart', {data_product});
+  }
+  res.end();
+});
+
+
+router.post('/cart', async (req, res) => {
+
   try {
-    const { column1Value, column2Value, column3Value } = req.body; // Lấy dữ liệu từ biểu mẫu gửi lên
-    const data = { column1Value, column2Value, column3Value };
-    await dataModel.addData(data); // Gọi phương thức từ Model để thêm dữ liệu
-    res.redirect('/'); // Chuyển hướng về trang chính sau khi thêm dữ liệu
+    let ma_san_pham= req.query.ma_san_pham;
+    let anh = req.query.anh;
+    let ten = req.query.ten;
+    let gia_tien = req.query.gia_tien;
+    
+    // const data_user = await dataModel.getDataUsers(req.session.email, req.session.password);
+    // let data_one_lot_chuot = await dataModel.selectOneLot_chuotById(req.query.id);
+    const findProductCart = await dataModel.findProductCart(req.session.email,ma_san_pham);
+    
+    // console.log(findProductCart);
+    if (findProductCart[0].number > 0){
+      
+      // console.log('Có dữ liệu trong truy vấn.');
+      // message = "Sản phẩm đã trong giỏ hàng";
+    } else{
+      // console.log('Không có dữ liệu trong truy vấn.');
+      //  message = "Thêm sản phẩm vào giỏ hàng thành công";
+      await dataModel.addToCart(ma_san_pham,req.session.email, anh, ten, gia_tien);
+      
+    }
+
+    // let users_id = await dataModel.getIdUsersByEmail(email);
+    res.redirect('/chi-tiet-lot-chuot?id='+req.query.id); 
   } catch (error) {
     console.error(error);
     res.status(500).send('Lỗi trong quá trình thêm dữ liệu');
   }
+  
 });
+
+
+
+
+// // Route để hiển thị trang thêm dữ liệu
+// router.get('/add', (req, res) => {
+//   res.render('add'); // Hiển thị trang thêm dữ liệu
+// });
+
+// // Route để xử lý yêu cầu thêm dữ liệu
+// router.post('/add', async (req, res) => {
+//   try {
+//     const { column1Value, column2Value, column3Value } = req.body; // Lấy dữ liệu từ biểu mẫu gửi lên
+//     const data = { column1Value, column2Value, column3Value };
+//     await dataModel.addData(data); // Gọi phương thức từ Model để thêm dữ liệu
+//     res.redirect('/'); // Chuyển hướng về trang chính sau khi thêm dữ liệu
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).send('Lỗi trong quá trình thêm dữ liệu');
+//   }
+// });
 
 
 

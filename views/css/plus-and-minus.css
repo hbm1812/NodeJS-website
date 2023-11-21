@@ -1,0 +1,25 @@
+#buy-amount{
+    display: flex;
+}
+#buy-amount button{
+    width: 35px;
+    height: 35px;
+    outline: none;
+    background: none;
+    border: 1px solid #ececec;
+    cursor: pointer;
+}
+#buy-amount button:hover{
+    background-color: #ececec;
+}
+#buy-amount button svg{
+    color: #909090;
+}
+#buy-amount button:hover svg{
+    color: #4f4f4f;
+}
+#buy-amount #amount{
+    width: 40px;
+    text-align: center;
+    border: 1px solid #ececec;
+}

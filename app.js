@@ -3,6 +3,7 @@ const app = express();
 const port = 3000;
 const path = require('path');
 const session = require('express-session');
+const ejs = require("ejs");
 
 // Cài đặt template engine EJS
 app.set('view engine', 'ejs');
