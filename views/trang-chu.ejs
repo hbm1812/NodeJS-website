@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="./css/header.css">
     <link rel="stylesheet" href="./css/body.css">
     <link rel="stylesheet" href="./css/footer.css">
+    <link rel="stylesheet" href="./css/PopypModal.css">
     <script src="./js/header.js"></script>
 
 
@@ -136,7 +137,6 @@
                                     <span class="cat-title">LÓT CHUỘT</span>
                                 </a>
                                 <div class="sub-menu menu-hover-1">
-                                
                                     <div class="sub-item">
                                         <a href="/lot-chuot-co-80x30" class="cat-2">LÓT CHUỘT CỠ 80X30</a>
                                         
@@ -721,14 +721,22 @@
                             <a href="https://www.messenger.com/t/1684408595122637" target="_blank" class="text font-500">Tư vấn trực tiếp</a>
                         </div>
                         <div class="item item-cart position-relative" id="cart">
+                            <% if(typeof data_user != "undefined" ){ %>
                             <a href="/cart" class="icons icon-cart">
-                                <% if(typeof data_user != "undefined" ){ %>
                                 <span class="cart-count js-cart-count" id="cart-count"><%= count_cart[0].so_luong %></span>
-                                <% }else{ %>
-                                <span class="cart-count js-cart-count" id="cart-count">0</span>
-                                <% } %>
+                                     
                             </a>
-                            <a href="/cart" class="font-700">Giỏ hàng</a>
+                            <% }else{ %>
+                                <a href="javascript:void(0)" class="icons icon-cart btn-open-modal-cart">
+                                    <span class="cart-count js-cart-count" id="cart-count">0</span>       
+                                </a>
+                            <% } %>
+                            <% if(typeof data_user != "undefined" ){ %>
+                                <a href="/cart" class="font-700">Giỏ hàng</a>
+                            <% }else{ %>
+                                <a href="javascript:void(0)" class="font-700 btn-open-modal-cart">Giỏ hàng</a>
+                            <% } %>
+                            
                             <div class="header-cart-hover loaded" id="js-header-cart-holder">
                                 <% if(typeof data_cart != "undefined" ){ %>
                                     <div class="cart-items-holder">
@@ -743,7 +751,7 @@
                                             
                                                 <p class="m-0 d-flex justify-content-between">
                                                     <b>x1</b>
-                                                    <b class="red"><%= item.gia_tien%> đ</b>
+                                                    <b class="red"><%= item.gia_tien%>.000đ</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -785,9 +793,50 @@
                                     
                             </div>
                         </div>
+                        <!--Modal -->
+                        <div id="modal-container">
+                            <div class="modal" id="modal-demo">
+                                <div class="modal-header">
+                                    <h2>THÔNG BÁO</h2>
+                                    <button id="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Bạn chưa <a href="/dang-nhap">đăng nhập</a></p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--End Modal -->
                     </div>
                 </div>
             </div>
+            <script>
+                
+                const btn_close_modal = document.getElementById('btn-close-modal');
+                const modal_container = document.getElementById('modal-container');
+                const modal_demo = document.getElementById('modal-demo');
+
+                const btn_open_modal_cart = document.getElementsByClassName("btn-open-modal-cart");
+                for (let i = 0; i < btn_open_modal_cart.length; i++) {
+                     btn_open_modal_cart[i].addEventListener('click', ()=>{
+                    // Add class .show
+                    modal_container.classList.add('show');
+                    });
+                }
+                
+        
+                btn_close_modal.addEventListener('click', ()=>{
+                    // Add class .show
+                    modal_container.classList.remove('show');
+                });
+        
+                modal_container.addEventListener('click',(e)=>{
+                    if(!modal_demo.contains(e.target)){
+                        btn_close_modal.click();
+                    }
+            
+                });
+
+            </script>
 
            
 

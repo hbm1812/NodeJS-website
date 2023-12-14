@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>CHI TIẾT</title>
+        <title><%= data_one_lot_chuot[0].ten %></title>
 
         <link rel="stylesheet" href="./css/header.css">
         <link rel="stylesheet" href="./css/body.css">
@@ -205,14 +205,21 @@
 
                             
                             <div class="item item-cart position-relative" id="cart">
-                                <a href="/cart" class="icons icon-cart">
-                                    <% if(typeof data_user != "undefined" ){ %>
-                                    <span class="cart-count js-cart-count" id="cart-count"><%= count_cart[0].so_luong %></span>
+                                <% if(typeof data_user != "undefined" ){ %>
+                                    <a href="/cart" class="icons icon-cart">
+                                        <span class="cart-count js-cart-count" id="cart-count"><%= count_cart[0].so_luong %></span>
+                                             
+                                    </a>
                                     <% }else{ %>
-                                    <span class="cart-count js-cart-count" id="cart-count">0</span>
+                                        <a href="javascript:void(0)"  class="icons icon-cart btn-open-modal-cart">
+                                            <span class="cart-count js-cart-count" id="cart-count">0</span>       
+                                        </a>
                                     <% } %>
-                                </a>
-                                <a href="/cart" class="font-700">Giỏ hàng</a>
+                                    <% if(typeof data_user != "undefined" ){ %>
+                                        <a href="/cart" class="font-700">Giỏ hàng</a>
+                                    <% }else{ %>
+                                        <a href="javascript:void(0)"  class="font-700 btn-open-modal-cart">Giỏ hàng</a>
+                                    <% } %>
                                 <div class="header-cart-hover loaded" id="js-header-cart-holder">
                                     <% if(typeof data_user != "undefined" ){ %>
                                         <div class="cart-items-holder">
@@ -227,7 +234,7 @@
                                                 
                                                     <p class="m-0 d-flex justify-content-between">
                                                         <b>x1</b>
-                                                        <b class="red"><%= item.gia_tien%> đ</b>
+                                                        <b class="red"><%= item.gia_tien%>.000đ</b>
                                                     </p>
                                                 </div>
                                             </div>
@@ -355,7 +362,7 @@
                             <div class="pd-variant-group-holder" id="js-variant-group-holder">
                                 
                                 <% if(data_one_lot_chuot[0].kich_thuoc == "45x40cm" ){ %>
-                                <a href="/pad-44-sleep-bear" class="item current">
+                                <a href="javascript:void(0)" class="item current">
                                     <span class="name">45x40CM</span>
                                     <span class="price">
                                         90.000<u>đ</u>
@@ -393,7 +400,7 @@
 
 
                                 <% if(data_one_lot_chuot[0].kich_thuoc == "26x21cm" ){ %>
-                                <a href="/pad-22-sleep-bear" class="item current">
+                                <a href="javascript:void(0)" class="item current">
                                     <span class="name">26x21CM</span>
                                     <span class="price">
                                         35.000<u>đ</u>
@@ -419,7 +426,7 @@
                                         <td>Giá khuyến mại:</td>
                                         <td>
                                             <span class="pd-price js-variantSelected-price">
-                                                <%= data_one_lot_chuot[0].gia_tien %>₫
+                                                <%= data_one_lot_chuot[0].gia_tien %>.000₫
                                             
                                             </span>
                                         
@@ -431,7 +438,7 @@
 
                         <div class="pd-btn-cart">
                             <% if(typeof data_user != "undefined" ){ %>
-                            <a href="/cart?ma_san_pham=<%= data_one_lot_chuot[0].ma_san_pham %>" id="js-buy-now">MUA NGAY</a>
+                            <a href="/chi-tiet-lot-chuot-buy-now?ma_san_pham=<%= data_one_lot_chuot[0].ma_san_pham %>" id="js-buy-now">MUA NGAY</a>
                             <a href="">
                                 <form action="/cart?ma_san_pham=<%= data_one_lot_chuot[0].ma_san_pham %>&id=<%= data_one_lot_chuot[0].id %>&anh=<%= data_one_lot_chuot[0].anh %>&ten=<%= data_one_lot_chuot[0].ten %>&gia_tien=<%= data_one_lot_chuot[0].gia_tien %>" method="post">
                                     <button type="submit" style="text-decoration: none; border: none; background: #FF5C00; color: #FFFF; font-weight: 800; font-size: 24px;">THÊM VÀO GIỎ</button>
@@ -439,7 +446,7 @@
                             </a>
                             
                             <% }else{ %>
-                                <a href="/cart?ma_san_pham=<%= data_one_lot_chuot[0].ma_san_pham %>" id="js-buy-now">MUA NGAY</a>
+                                <a href="/chi-tiet-lot-chuot-buy-now?ma_san_pham=<%= data_one_lot_chuot[0].ma_san_pham %>" id="js-buy-now">MUA NGAY</a>
                                 <a href="javascript:void(0)" id="btn-open-modal">THÊM VÀO GIỎ</a>
                             <% } %>
                         </div>
@@ -465,10 +472,24 @@
                             const btn_close_modal = document.getElementById('btn-close-modal');
                             const modal_container = document.getElementById('modal-container');
                             const modal_demo = document.getElementById('modal-demo');
+                            const btn_open_modal_cart = document.getElementsByClassName("btn-open-modal-cart")
+                            for (let i = 0; i < btn_open_modal_cart.length; i++) {
+                                btn_open_modal_cart[i].addEventListener('click', ()=>{
+                                // Add class .show
+                                modal_container.classList.add('show');
+                            });
+                            }
                             btn_open_modal.addEventListener('click', ()=>{
                                 // Add class .show
                                 modal_container.classList.add('show');
                             });
+
+                           
+
+                            // btn_open_modal_cart_2.addEventListener('click', ()=>{
+                            //     // Add class .show
+                            //     modal_container.classList.add('show');
+                            // });
                     
                             btn_close_modal.addEventListener('click', ()=>{
                                 // Add class .show

@@ -370,10 +370,208 @@ function findProductCart(email, ma_san_pham) {
 
 
 
+// lấy dữ liệu lót chuột
+
+function getCountLotChuot() {
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT count(*) as so_luong FROM lot_chuot'; 
+    connection.query(query, (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(results);
+    });
+  });
+}
+
+function createNewLotChuot(data) {
+  return new Promise((resolve, reject) => {
+    const query = 'INSERT INTO lot_chuot (tu_khoa, do_day, chu_de_key, kich_thuoc, ten, ma_san_pham, anh, thong_so, dac_diem, gia_tien, hang_san_xuat, so_luong) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'; 
+    connection.query(query, [data.tu_khoa, data.do_day, data.chu_de_key, data.kich_thuoc, data.ten, data.ma_san_pham, data.anh, data.thong_so, data.dac_diem, data.gia_tien, data.hang_san_xuat, data.so_luong], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(results);
+    });
+  });
+}
+
+function getDataBanPhim_theLoai(the_loai_current) {
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT * FROM ban_phim WHERE the_loai=? ORDER BY gia_tien ASC, ma_san_pham DESC'; 
+    connection.query(query,[the_loai_current], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(results);
+    });
+  });
+}
+
+
+function selectOneBanPhimById(id) {
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT * FROM ban_phim WHERE id=?;'
+    connection.query(query, [id], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      // console.log(results);
+      resolve(results);
+    });
+  });
+}
+
+
+function selectOneBanPhimByMaSanPham(ma_san_pham) {
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT * FROM ban_phim WHERE ma_san_pham=?;'
+    connection.query(query, [ma_san_pham], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      // console.log(results);
+      resolve(results);
+    });
+  });
+}
+
+
+function getCountBanPhim(the_loai_current) {
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT count(*) as so_luong FROM ban_phim WHERE the_loai=?'; 
+    connection.query(query,[the_loai_current], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(results);
+    });
+  });
+}
 
 
 
+function getDataChuot_theLoai(the_loai_current) {
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT * FROM chuot WHERE the_loai=? ORDER BY gia_tien ASC, ma_san_pham DESC'; 
+    connection.query(query,[the_loai_current], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(results);
+    });
+  });
+}
 
+
+function getCountChuot(the_loai_current) {
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT count(*) as so_luong FROM chuot WHERE the_loai=?'; 
+    connection.query(query,[the_loai_current], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(results);
+    });
+  });
+}
+
+
+function selectOneChuotById(id) {
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT * FROM chuot WHERE id=?;'
+    connection.query(query, [id], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      // console.log(results);
+      resolve(results);
+    });
+  });
+}
+
+function selectOneChuotByMaSanPham(ma_san_pham) {
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT * FROM chuot WHERE ma_san_pham=?;'
+    connection.query(query, [ma_san_pham], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      // console.log(results);
+      resolve(results);
+    });
+  });
+}
+
+
+
+function deleteOneProductInCart(id) {
+  return new Promise((resolve, reject) => {
+    const query = 'DELETE FROM cart WHERE id=?;'
+    connection.query(query, [id], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      // console.log(results);
+      resolve(results);
+    });
+  });
+}
+
+function deleteAllCart(email) {
+  return new Promise((resolve, reject) => {
+    const query = 'DELETE FROM cart WHERE email=?;'
+    connection.query(query, [email], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      // console.log(results);
+      resolve(results);
+    });
+  });
+}
+
+
+function updateLotChuot(data) {
+  return new Promise((resolve, reject) => {
+    const query = 'UPDATE lot_chuot SET tu_khoa=?, do_day=?, chu_de_key=?, kich_thuoc=?, ten=?, ma_san_pham=?, anh=?, thong_so=?, dac_diem=?, gia_tien=?, hang_san_xuat=?, so_luong=? WHERE id=?;'
+    connection.query(query, [data.tu_khoa, data.do_day, data.chu_de_key, data.kich_thuoc, data.ten, data.ma_san_pham, data.anh, data.thong_so, data.dac_diem, data.gia_tien, data.hang_san_xuat, data.so_luong, data.id], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      // console.log(results);
+      resolve(results);
+    });
+  });
+}
+
+
+function deleteLotChuot(id) {
+  return new Promise((resolve, reject) => {
+    const query = 'DELETE FROM lot_chuot WHERE id=?;'
+    connection.query(query, [id], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      // console.log(results);
+      resolve(results);
+    });
+  });
+}
   
 
-module.exports = {connection, getData, addData, getDataUsers, createAccount, createEmailInformation, getInformation, updateInformation, updateUsernameUsers, changePassword, createNewAccount, selectOneAccountById, updateUsers, updateEmailInformation, getIdIdformation, deleteUsers, deleteInformation, getDataLotChuot, getDataLotChuot_chuDe, selectOneLot_chuotById, selectOneLot_chuotByMaSanPham,addToCart,showCart,countCart,sumCart,findProductCart};
+module.exports = {connection, getData, addData, getDataUsers, createAccount, createEmailInformation, getInformation, updateInformation, updateUsernameUsers, changePassword, createNewAccount, selectOneAccountById, updateUsers, updateEmailInformation, getIdIdformation, deleteUsers, deleteInformation, getDataLotChuot, getDataLotChuot_chuDe, selectOneLot_chuotById, selectOneLot_chuotByMaSanPham,addToCart,showCart,countCart,sumCart,findProductCart, getCountLotChuot, createNewLotChuot, getDataBanPhim_theLoai, selectOneBanPhimById, selectOneBanPhimByMaSanPham, getCountBanPhim, getDataChuot_theLoai, getCountChuot, selectOneChuotById, selectOneChuotByMaSanPham, deleteOneProductInCart, deleteAllCart, updateLotChuot,deleteLotChuot};

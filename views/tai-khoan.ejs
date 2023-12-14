@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="./css/header.css">
         <link rel="stylesheet" href="./css/body.css">
         <link rel="stylesheet" href="./css/footer.css">
+        <link rel="stylesheet" href="./css/PopypModal.css">
         <script src="./js/header.js"></script>
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -199,17 +200,89 @@
                                     target="_blank" class="text font-500">Tư vấn
                                     trực tiếp</a>
                             </div>
-                            <div class="item item-cart position-relative"
-                                id="js-header-cart">
-                                <i class="fa-solid fa-cart-shopping"
-                                    style="color: #29A07E;"></i>
-                                <a href="/cart" class="font-700">Giỏ hàng</a>
-                                <div class="header-cart-hover loaded"
-                                    id="js-header-cart-holder">
-                                    <b class="d-block text-center p-4">Có 0 sản
-                                        phẩm trong giỏ hàng</b>
-                                    <!-- Load time: 0.05728 seconds  / 2 mb-->
-                                    <!-- Powered by Hura8 Cloud - 2.3, Released: 10-Aug-2021 / Website: www.hurasoft.vn -->
+                            <div class="item item-cart position-relative" id="cart">
+                                <% if(typeof data_user != "undefined" ){ %>
+                                <a href="/cart" class="icons icon-cart">
+                                    <span class="cart-count js-cart-count" id="cart-count"><%= count_cart[0].so_luong %></span>
+                                         
+                                </a>
+                                <% }else{ %>
+                                    <a href="javascript:void(0)" class="icons icon-cart btn-open-modal-cart">
+                                        <span class="cart-count js-cart-count" id="cart-count">0</span>       
+                                    </a>
+                                <% } %>
+                                <% if(typeof data_user != "undefined" ){ %>
+                                    <a href="/cart" class="font-700">Giỏ hàng</a>
+                                <% }else{ %>
+                                    <a href="javascript:void(0)" class="font-700 btn-open-modal-cart">Giỏ hàng</a>
+                                <% } %>
+                                
+                                <div class="header-cart-hover loaded" id="js-header-cart-holder">
+                                    <% if(typeof data_cart != "undefined" ){ %>
+                                        <div class="cart-items-holder">
+                                            <% data_cart.forEach(item=> { %>
+                                            <div class="cart-item">
+                                                <a href="/pad-33-sleep-bear" class="cart-img">
+                                                    <img src="<%= item.anh%>">
+                                                    
+                                                </a>
+                                                <div class="cart-text">
+                                                    <a href="/pad-33-sleep-bear" class="d-block font-700" style="margin-bottom: 5px"><%= item.ten%></a>
+                                                
+                                                    <p class="m-0 d-flex justify-content-between">
+                                                        <b>x1</b>
+                                                        <b class="red"><%= item.gia_tien%>.000đ</b>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <% }); %>
+                                            <!-- <div class="cart-item">
+                                                <a href="/pad-22-many-cat" class="cart-img">
+                                                    <img src="./assets/media/product/250-1391-53424e5247a21b79417d566bc2869499.jpg">
+                                                    
+                                                </a>
+                                                <div class="cart-text">
+                                                    <a href="/pad-22-many-cat" class="d-block font-700" style="margin-bottom: 5px; justify-content: start;">PAD 22 MANY CAT</a>
+                                                    
+                                                      
+                                                  
+                                                    <p class="m-0 d-flex justify-content-between">
+                                                        <b>x1</b>
+                                                        <b class="red">35.000 đ</b>
+                                                    </p>
+                                                </div>
+                                            </div> -->
+                                        </div>
+                                        <div class="cart-price-hover">
+                                            <p class="grey font-300 m-0 text-right">
+                                                Tổng tiền hàng
+                                                (<span class="red"><span class="js-cart-count"><%= count_cart[0].so_luong %></span> sản phẩm</span>):
+                                                <span class="red text-18 font-600" style="vertical-align: top;">
+                                                    <%= tong_gia_tien[0].gia_tien %>.000đ
+                                                    
+                                                </span>
+                                            </p>
+                                    
+                                            <a href="/cart" class="d-block text-center text-white btn-goCart"> THANH TOÁN NGAY </a>
+                                        </div>
+    
+                                    <% } else{ %>
+                                        <b class="d-block text-center p-4">Có 0 sản phẩm trong giỏ hàng</b>
+                                   
+                                    <% } %>
+                                        
+                                </div>
+                            </div>
+                            <!--Modal -->
+                            <div id="modal-container">
+                                <div class="modal" id="modal-demo">
+                                    <div class="modal-header">
+                                        <h2>THÔNG BÁO</h2>
+                                        <button id="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Bạn chưa <a href="/dang-nhap">đăng nhập</a></p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -217,6 +290,35 @@
                 </div>
 
             </div>
+            <script>
+                
+                const btn_close_modal = document.getElementById('btn-close-modal');
+                const modal_container = document.getElementById('modal-container');
+                const modal_demo = document.getElementById('modal-demo');
+
+                const btn_open_modal_cart = document.getElementsByClassName("btn-open-modal-cart");
+                for (let i = 0; i < btn_open_modal_cart.length; i++) {
+                     btn_open_modal_cart[i].addEventListener('click', ()=>{
+                    // Add class .show
+                    modal_container.classList.add('show');
+                    });
+                }
+                
+        
+                btn_close_modal.addEventListener('click', ()=>{
+                    // Add class .show
+                    modal_container.classList.remove('show');
+                });
+        
+                modal_container.addEventListener('click',(e)=>{
+                    if(!modal_demo.contains(e.target)){
+                        btn_close_modal.click();
+                    }
+            
+                });
+
+            </script>
+
         </header>
 
         <main>

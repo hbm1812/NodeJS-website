@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Lacdaustore - Quản lý</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="./css/quan-ly.css">
+</head>
+
+<body>
+    <div class="container-xxl position-relative bg-white d-flex p-0">
+        <!-- Spinner Start -->
+        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <!-- Spinner End -->
+
+
+        <!-- Sidebar Start -->
+        <div class="sidebar pe-4 pb-3">
+            <nav class="navbar bg-light navbar-light">
+                <a href="quan-ly" class="navbar-brand mx-4 mb-3">
+                    <h4 class="text-primary" style="color: #29A07E!important"><i class="fa fa-hashtag me-2"></i>LẮC ĐẦU STORE</h4>
+                </a>
+                <div class="d-flex align-items-center ms-4 mb-4">
+                    <img src="./assets/default/images/logo.png" alt="" srcset="" style="width: 150px;">
+                </div>
+                <div class="navbar-nav w-100">
+                    <a href="quan-ly" class="nav-item nav-link "><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle " data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Quản lý tài khoản</a>
+                        <div class="dropdown-menu bg-transparent border-0">
+                            <a href="quan-ly-tai-khoan" class="dropdown-item">Xem danh sách</a>
+                            <a href="them-tai-khoan" class="dropdown-item">Thêm tài khoản</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown"><i class="fa fa-th me-2"></i>Quản lý sản phẩm</a>
+                        <div class="dropdown-menu bg-transparent border-0">
+                            <a href="quan-ly-lot-chuot" class="dropdown-item active">Lót chuột</a>
+                            <a href="them-tai-khoan" class="dropdown-item">Bàn phím</a>
+                        </div>
+                    </div>
+                    <a href="form.html" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Forms</a>
+                    <a href="table.html" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Tables</a>
+                    <a href="chart.html" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Charts</a>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Pages</a>
+                        <div class="dropdown-menu bg-transparent border-0">
+                            <a href="signin.html" class="dropdown-item">Sign In</a>
+                            <a href="signup.html" class="dropdown-item">Sign Up</a>
+                            <a href="404.html" class="dropdown-item">404 Error</a>
+                            <a href="blank.html" class="dropdown-item">Blank Page</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <!-- Sidebar End -->
+
+
+        <!-- Content Start -->
+        <div class="content">
+            <!-- Navbar Start -->
+            <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
+                <a href="quan-ly" class="navbar-brand d-flex d-lg-none me-4">
+                    <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
+                </a>
+                <a href="#" class="sidebar-toggler flex-shrink-0">
+                    <i class="fa fa-bars"></i>
+                </a>
+                <form class="d-none d-md-flex ms-4">
+                    <input class="form-control border-0" type="search" placeholder="Search">
+                </form>
+                <div class="navbar-nav align-items-center ms-auto">
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                            <i class="fa fa-envelope me-lg-2"></i>
+                            <span class="d-none d-lg-inline-flex">Message</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                            <a href="#" class="dropdown-item">
+                                <div class="d-flex align-items-center">
+                                    <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                                    <div class="ms-2">
+                                        <h6 class="fw-normal mb-0">Jhon send you a message</h6>
+                                        <small>15 minutes ago</small>
+                                    </div>
+                                </div>
+                            </a>
+                            <hr class="dropdown-divider">
+                            <a href="#" class="dropdown-item">
+                                <div class="d-flex align-items-center">
+                                    <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                                    <div class="ms-2">
+                                        <h6 class="fw-normal mb-0">Jhon send you a message</h6>
+                                        <small>15 minutes ago</small>
+                                    </div>
+                                </div>
+                            </a>
+                            <hr class="dropdown-divider">
+                            <a href="#" class="dropdown-item">
+                                <div class="d-flex align-items-center">
+                                    <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                                    <div class="ms-2">
+                                        <h6 class="fw-normal mb-0">Jhon send you a message</h6>
+                                        <small>15 minutes ago</small>
+                                    </div>
+                                </div>
+                            </a>
+                            <hr class="dropdown-divider">
+                            <a href="#" class="dropdown-item text-center">See all message</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                            <i class="fa fa-bell me-lg-2"></i>
+                            <span class="d-none d-lg-inline-flex">Notificatin</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                            <a href="#" class="dropdown-item">
+                                <h6 class="fw-normal mb-0">Profile updated</h6>
+                                <small>15 minutes ago</small>
+                            </a>
+                            <hr class="dropdown-divider">
+                            <a href="#" class="dropdown-item">
+                                <h6 class="fw-normal mb-0">New user added</h6>
+                                <small>15 minutes ago</small>
+                            </a>
+                            <hr class="dropdown-divider">
+                            <a href="#" class="dropdown-item">
+                                <h6 class="fw-normal mb-0">Password changed</h6>
+                                <small>15 minutes ago</small>
+                            </a>
+                            <hr class="dropdown-divider">
+                            <a href="#" class="dropdown-item text-center">See all notifications</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                            <img class="rounded-circle me-lg-2" src="./assets/images/04e97c2b23256462b77e27fc02c2e966.jpg" alt="" style="width: 40px; height: 40px;">
+                            <span class="d-none d-lg-inline-flex"><%= data_user[0].username %></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                            <a href="#" class="dropdown-item">My Profile</a>
+                            <a href="#" class="dropdown-item">Settings</a>
+                            <a href="/dang-xuat" class="dropdown-item">Log Out</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <!-- Navbar End -->
+
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <a href="/quan-ly-lot-chuot"><button type="button" class="btn btn-light">Quay trở lại</button></a>
+                    <h3 style="color: #29A07E">Sửa lót chuột</h3>
+                    <form action="sua-lot-chuot" method="post">
+                        <div class="mb-3">
+                            <label for="id" class="form-label">Id: </label>
+                            <input type="text" class="form-control" id="id" readonly  name="id" value="<%= data_lotChuot[0].id %>">
+                        </div>
+                        <div class="mb-3">
+                            <label for="tu_khoa" class="form-label">Từ khóa: </label>
+                            <input type="text" class="form-control" id="tu_khoa" placeholder="ví dụ: pad_sleep_bear" name="tu_khoa" value="<%= data_lotChuot[0].tu_khoa %>">
+                        </div>
+                        <div class="mb-3">
+                            <label for="do_day" class="form-label">Độ dày: </label>
+                            <select class="form-select" aria-label="Default select example" id="do_day" name="do_day">
+                                <!-- <option selected>Nhấp để mở lựa chọn</option> -->
+                                <% if(data_lotChuot[0].do_day == '' ){ %>
+                                <option selected>Nhấp để mở lựa chọn</option>
+                                <% }else{ %>
+                                    
+                                <% } %>
+
+                                <% if(data_lotChuot[0].do_day == '2mm' ){ %>
+                                <option value="2mm" selected> Dày 2MM </option>
+                                <% }else{ %>
+                                    <option value="2mm" > Dày 2MM </option>
+                                <% } %> 
+
+                                <% if(data_lotChuot[0].do_day == '3mm' ){ %>
+                                    <option value="3mm" selected> Dày 3MM </option>
+                                <% }else{ %>
+                                     <option value="3mm" > Dày 3MM </option>
+                                <% } %>     
+                                
+                                <% if(data_lotChuot[0].do_day == '4mm' ){ %>
+                                    <option value="4mm" selected> Dày 4MM </option>
+                                <% }else{ %>
+                                    <option value="4mm" > Dày 4MM </option>
+                                <% } %>
+
+                                <% if(data_lotChuot[0].do_day == '5mm' ){ %>
+                                    <option value="5mm" selected> Dày 5MM </option>
+                                <% }else{ %>
+                                    <option value="5mm" > Dày 5MM </option>
+                                <% } %> 
+
+
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="chu_de_key" class="form-label">Chủ đề: </label>
+                            <select class="form-select" aria-label="Default select example" id="chu_de_key" name="chu_de_key">
+                                <!-- <option selected>Nhấp để mở lựa chọn</option>
+                                <option value="dragon_ball" > DRAGON BALL </option>                        
+                                <option value="de_thuong"> DỄ THƯƠNG </option>
+                                <option value="pokemon"> POKEMON </option> -->
+
+                                <% if(data_lotChuot[0].chu_de_key == "" ){ %>
+                                    <option selected>Nhấp để mở lựa chọn</option>
+                                    <% }else{ %>
+                                        
+                                    <% } %>
+    
+                                    <% if(data_lotChuot[0].chu_de_key == 'dragon_ball' ){ %>
+                                        <option value="dragon_ball" selected> DRAGON BALL </option> 
+                                    <% }else{ %>
+                                        <option value="dragon_ball" > DRAGON BALL </option> 
+                                    <% } %>
+
+                                    <% if(data_lotChuot[0].chu_de_key == "de_thuong" ){ %>
+                                        <option value="de_thuong" selected> DỄ THƯƠNG </option> 
+                                    <% }else{ %>
+                                        <option value="de_thuong" > DỄ THƯƠNG </option> 
+                                    <% } %> 
+
+                                    <% if(data_lotChuot[0].chu_de_key == 'pokemon' ){ %>
+                                        <option value="pokemon" selected> POKEMON </option> 
+                                    <% }else{ %>
+                                        <option value="pokemon" > POKEMON </option> 
+                                    <% } %> 
+                            </select>
+                        </div>
+    
+                        <div class="mb-3">
+                            <label for="kich_thuoc" class="form-label">Kích thước: </label>
+                            <select class="form-select" aria-label="Default select example" id="kich_thuoc" name="kich_thuoc">
+                                <option selected>Nhấp để mở lựa chọn</option>
+                                <option value="26x21cm">26x21CM</option>
+                                <option value="35x30cm">35x30CM</option>
+                                <option value="45x40cm">45x40CM</option>
+                                <option value="80x30cm">80x30CM</option>
+                                <option value="90x35cm">90x35CM</option>
+                                <option value="90x40cm">90x40CM</option>
+
+
+                                    <% if(data_lotChuot[0].kich_thuoc == "" ){ %>
+                                    <option selected>Nhấp để mở lựa chọn</option>
+                                    <% }else{ %>
+                                        
+                                    <% } %>
+    
+                                    <% if(data_lotChuot[0].kich_thuoc == '26x21cm' ){ %>
+                                        <option value="26x21cm" selected> 26x21CM </option> 
+                                    <% }else{ %>
+                                        <option value="26x21cm" > 26x21CM </option> 
+                                    <% } %>
+
+                                    <% if(data_lotChuot[0].kich_thuoc== "35x30cm" ){ %>
+                                        <option value="35x30cm" selected> DỄ THƯƠNG </option> 
+                                    <% }else{ %>
+                                        <option value="35x30cm" > 35x30cm </option> 
+                                    <% } %> 
+
+                                    <% if(data_lotChuot[0].kich_thuoc == '45x40cm' ){ %>
+                                        <option value="45x40cm" selected> 45x40CM </option> 
+                                    <% }else{ %>
+                                        <option value="45x40cm" > 45x40CM </option> 
+                                    <% } %> 
+
+                                    <% if(data_lotChuot[0].kich_thuoc == '80x30cm' ){ %>
+                                        <option value="80x30cm" selected> 80x30CM </option> 
+                                    <% }else{ %>
+                                        <option value="80x30cm" > 80x30CM </option> 
+                                    <% } %> 
+
+                                    <% if(data_lotChuot[0].kich_thuoc == '90x35cm' ){ %>
+                                        <option value="90x35cm" selected> 90x35CM </option> 
+                                    <% }else{ %>
+                                        <option value="90x35cm" > 90x35CM </option> 
+                                    <% } %> 
+
+                                    <% if(data_lotChuot[0].kich_thuoc == '90x40cm' ){ %>
+                                        <option value="90x40cm" selected> 90x40CM </option> 
+                                    <% }else{ %>
+                                        <option value="90x40cm" > 90x40CM </option> 
+                                    <% } %> 
+                              </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="ten" class="form-label">Tên lót chuột: </label>
+                            <input type="text" class="form-control" id="ten" placeholder="ví dụ: PAD 33 SLEEP BEAR " name="ten" value="<%= data_lotChuot[0].ten %>">
+                        </div>
+                        <div class="mb-3">
+                            <label for="ma_san_pham" class="form-label">Mã sản phẩm: (Mã sản phẩm mới nhất là: PAD9999)</label>
+                            <input type="text" class="form-control" id="ma_san_pham" placeholder="ví dụ: PAD0408 " name="ma_san_pham" value="<%= data_lotChuot[0].ma_san_pham %>">
+                        </div>
+
+                        <!-- <div class="mb-3">
+                            <label for="anh" class="form-label">Ảnh: </label>
+                            <input type="text" class="form-control" id="anh" name="anh">
+                        </div> -->
+                        <div class="mb-3">
+                            <label for="anh" class="form-label">Chọn ảnh</label>
+                            <input type="file" class="form-control" id="anh"  name="anh">
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="input-group">
+                                <span class="input-group-text">Thông số: </span>
+                                <textarea type="text" class="form-control" aria-label="With textarea" name="thong_so" ><%= data_lotChuot[0].thong_so %></textarea>
+                            </div>
+                        </div>
+                       
+                        <div class="mb-3">
+                            <label for="dac_diem" class="form-label">Đặc điểm: </label>
+                            <input type="text" class="form-control" value="<%= data_lotChuot[0].dac_diem %>" id="dac_diem" name="dac_diem" readonly>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="hang_san_xuat" class="form-label">Hãng sản xuất: </label>
+                            <select class="form-select" aria-label="Default select example" id="hang_san_xuat" name="hang_san_xuat">
+                                <option selected>Nhấp để mở lựa chọn</option>
+                                <option value="Lắc đầu" > Lắc đầu </option>
+                                
+                                <% if(data_lotChuot[0].hang_san_xuat == "" ){ %>
+                                    <option selected>Nhấp để mở lựa chọn</option>
+                                    <% }else{ %>
+                                        
+                                    <% } %>
+
+                                        <option value="<%=data_lotChuot[0].hang_san_xuat %>" selected> <%=data_lotChuot[0].hang_san_xuat %> </option> 
+                                    
+    
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="so_luong" class="form-label">Số lượng: </label>
+                            <input type="text" class="form-control"  id="so_luong" name="so_luong" value="<%=data_lotChuot[0].so_luong %>">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="gia_tien" class="form-label">Giá tiền: (nghìn đồng)</label>
+                            <input type="text" class="form-control"  id="gia_tien" name="gia_tien" value="<%=data_lotChuot[0].gia_tien %>">
+                        </div>
+    
+                        <button type="submit" class="btn btn-success">Lưu thay đổi</button>
+                    </form>
+                    
+                     
+                      
+
+                </div>
+            </div>
+            
+
+
+            
+            <!-- Footer End -->
+        </div>
+        <!-- Content End -->
+
+
+        <!-- Back to Top -->
+        <!-- <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a> -->
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/chart/chart.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="lib/tempusdominus/js/moment.min.js"></script>
+    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
+    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
+</body>
+
+</html>

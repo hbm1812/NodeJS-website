@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="./css/header.css">
         <link rel="stylesheet" href="./css/body.css">
         <link rel="stylesheet" href="./css/footer.css">
+        <link rel="stylesheet" href="./css/PopypModal.css">
         <script src="./js/header.js"></script>
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -201,14 +202,21 @@
                                     trực tiếp</a>
                             </div>
                             <div class="item item-cart position-relative" id="cart">
-                                <a href="/cart" class="icons icon-cart">
-                                    <% if(typeof data_cart != "undefined" ){ %>
-                                    <span class="cart-count js-cart-count" id="cart-count"><%= count_cart[0].so_luong %></span>
+                                    <% if(typeof data_user != "undefined" ){ %>
+                                    <a href="/cart" class="icons icon-cart">
+                                        <span class="cart-count js-cart-count" id="cart-count"><%= count_cart[0].so_luong %></span>
+                                             
+                                    </a>
                                     <% }else{ %>
-                                    <span class="cart-count js-cart-count" id="cart-count">0</span>
+                                        <a href="javascript:void(0)"  class="icons icon-cart btn-open-modal-cart">
+                                            <span class="cart-count js-cart-count" id="cart-count">0</span>       
+                                        </a>
                                     <% } %>
-                                </a>
-                                <a href="/cart" class="font-700">Giỏ hàng</a>
+                                    <% if(typeof data_user != "undefined" ){ %>
+                                        <a href="/cart" class="font-700">Giỏ hàng</a>
+                                    <% }else{ %>
+                                        <a href="javascript:void(0)"  class="font-700 btn-open-modal-cart">Giỏ hàng</a>
+                                    <% } %>
                                 <div class="header-cart-hover loaded" id="js-header-cart-holder">
                                     <% if(typeof data_cart != "undefined" ){ %>
                                         <div class="cart-items-holder">
@@ -223,7 +231,7 @@
                                                 
                                                     <p class="m-0 d-flex justify-content-between">
                                                         <b>x1</b>
-                                                        <b class="red"><%= item.gia_tien%> đ</b>
+                                                        <b class="red"><%= item.gia_tien%>.000đ</b>
                                                     </p>
                                                 </div>
                                             </div>
@@ -264,12 +272,28 @@
                                     <% } %>
                                         
                                 </div>
+                                
                             </div>
                         </div>
                     </div>
                 </div>
+                <!--Modal -->
+                <div id="modal-container">
+                    <div class="modal" id="modal-demo">
+                        <div class="modal-header">
+                            <h2>THÔNG BÁO</h2>
+                            <button id="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Bạn chưa <a href="/dang-nhap">đăng nhập</a></p>
+                        </div>
+                    </div>
+                </div>
+                <!--End Modal -->
+                
 
             </div>
+            
         </header>
 
         <main>
@@ -390,11 +414,19 @@
                                 <p class="box-title">CHỦ ĐỀ LÓT CHUỘT</p>
                         
                                 <div class="filter-list">
-                                    
+                                   <% if(chu_de_key_current === "dragon_ball" ){ %>
+                                    <a href="/lot-chuot" class="current">
+                                        <i class="icon-square"></i>
+                                        <span class="title">DRAGON BALL</span>                                   
+                                    </a>
+                                    <% } %>
+                                    <% if(chu_de_key_current === "none" ){ %>
                                     <a href="/lot-chuot-chu-de?chu_de=dragon_ball">
                                         <i class="icon-square"></i>
                                         <span class="title">DRAGON BALL</span>                                   
                                     </a>
+                                    <%}%>
+                                    
                                     
                                     <a href="https://lacdau.com/lot-chuot?filter=145">
                                         <i class="icon-square"></i>
@@ -565,7 +597,7 @@
                     <div class="col-right">
                         <div class="page-title-group">
                             <h1 class="page-title">LÓT CHUỘT</h1>
-                            <span>(873 sản phẩm)</span>
+                            <span>(<%= count_lot_chuot[0].so_luong%> sản phẩm)</span>
                         </div>
                         <div class="product-holder-group" >
                             <div class="sort-by-group">
@@ -641,11 +673,29 @@
                                         <div class="p-price-container">
                                             
                                             <span class="p-price">
-                                                <%= item.gia_tien%><u>đ</u>
+                                                <%= item.gia_tien%>.000<u>đ</u>
                                                 
                                             </span>
+                                            <% if(typeof data_user != "undefined" ){ %>
+                                                <a href="javascript:void(0)" class="p-btn-cart a-add-to-cart-at-menu"  >
+                                                    <form action="/cart-2?ma_san_pham=<%= item.ma_san_pham %>&id=<%= item.id %>&anh=<%= item.anh %>&ten=<%= item.ten %>&gia_tien=<%= item.gia_tien %>" method="post">
+                                                        <button type="submit" class="btn-add-to-cart-at-menu" style="text-decoration: none; border: none; display: none;"></button>
+                                                    </form>
+                                                </a>
+                                                <script>
+                                                    var a_add_to_cart_at_menu = document.getElementsByClassName("a-add-to-cart-at-menu");
+                                                    var btn_add_to_cart_at_menu = document.getElementsByClassName("btn-add-to-cart-at-menu");
+                                                    for (let i = 0; i < a_add_to_cart_at_menu.length; i++) {
+                                                        a_add_to_cart_at_menu[i].addEventListener('click', ()=>{
+                                                        // Add class .show
+                                                        btn_add_to_cart_at_menu[i].click();
+                                                        });
+                                                    }
+                                                </script>
+                                            <% }else{ %>
+                                                <a href="javascript:void(0)" class="p-btn-cart btn-open-modal-cart" ></a>
+                                            <% } %>
                                 
-                                            <a href="javascript:void(0)" class="p-btn-cart" onclick="addProductToCart(795, 0, '')"></a>
                                         </div>
                                     </div>
                                 </div>
@@ -657,14 +707,21 @@
 
                             </div>
 
-                            <div class="paging">               
-                                <a href="/lot-chuot" class="current"> 1 </a>                              
-                                <a href="/lot-chuot?page=2"> 2 </a>                             
+                            <div class="paging">
+                                <% for (var i = 0; i < data_LotChuot.length/15; i++) { %>  
+                                    <%    if(i==0){%> 
+                                        <a href="/lot-chuot" class="current"> <%= i+1 %> </a>
+                                        <% }else{ %>  
+                                         <a href="/lot-chuot?page=<%= i+1 %>"> <%= i+1 %> </a>
+                                         <% } %>        
+                                  
+                                <% } %>                            
+                                <!-- <a href="/lot-chuot?page=2"> 2 </a>                             
                                 <a href="/lot-chuot?page=3"> 3 </a>                           
                                 <a href="/lot-chuot?page=4"> 4 </a>                            
                                 <a href="/lot-chuot?page=5"> 5 </a>
                                 <a href="/lot-chuot?page=6"> 6 </a>
-                                <a href="/lot-chuot?page=7"> 7 </a>
+                                <a href="/lot-chuot?page=7"> 7 </a> -->
                                 
                                                                
                             </div>
@@ -683,6 +740,34 @@
                 </div>
 
             </div>
+            <script>
+                    
+                const btn_close_modal = document.getElementById('btn-close-modal');
+                const modal_container = document.getElementById('modal-container');
+                const modal_demo = document.getElementById('modal-demo');
+
+                const btn_open_modal_cart = document.getElementsByClassName("btn-open-modal-cart");
+                for (let i = 0; i < btn_open_modal_cart.length; i++) {
+                    btn_open_modal_cart[i].addEventListener('click', ()=>{
+                    // Add class .show
+                    modal_container.classList.add('show');
+                    });
+                }
+                
+        
+                btn_close_modal.addEventListener('click', ()=>{
+                    // Add class .show
+                    modal_container.classList.remove('show');
+                });
+        
+                modal_container.addEventListener('click',(e)=>{
+                    if(!modal_demo.contains(e.target)){
+                        btn_close_modal.click();
+                    }
+            
+                });
+
+            </script>
             
         </main>
 

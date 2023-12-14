@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="./css/body.css">
     <link rel="stylesheet" href="./css/footer.css">
     <link rel="stylesheet" href="./css/plus-and-minus.css">
+    <link rel="stylesheet" href="./css/PopypModal.css">
     <script src="./js/header.js"></script>
 
 
@@ -293,7 +294,7 @@
                 
             </div>
 
-            <% if(typeof data_user != "undefined" ){ %>
+            
             <div class="cart-page container">
                 <form method="post" action="">
                     <div class="cart-items-container">
@@ -301,8 +302,8 @@
                             <div class="item-header-title d-flex align-items-center justify-content-between font-600">
                                 <p class="m-0"> THÔNG TIN GIỎ HÀNG </p>
                                 <div>
-                                    <a href="/" class="goHome d-inline-block "><i class="fas fa-long-arrow-alt-left" aria-hidden="true"></i> CHỌN TIẾP SẢN PHẨM KHÁC </a>
-                                    <a href="javascript:void(0);" class=" d-inline-block js-delete-cart" onclick="$('.js-delete-item').click()"> XOÁ GIỎ HÀNG </a>
+                                    <a href="/trang-chu" class="goHome d-inline-block "><i class="fas fa-long-arrow-alt-left" aria-hidden="true"></i> CHỌN TIẾP SẢN PHẨM KHÁC </a>
+                                    <a href="javascript:void(0);" class=" d-inline-block js-delete-cart " onclick="Xoa_toan_bo_gio_hang('<%=data_user[0].email%>')"> XOÁ GIỎ HÀNG </a>
                                 </div>
                             </div>
                             <div class="col-header cart-col-row text-15 font-300">
@@ -334,28 +335,14 @@
                                 </div>
             
                                 <div class="cart-col-3 clearfix">
-                                    <!-- <a href="javascript:void(0)" class="quantity-change js-quantity-change" data-value="-1"> - </a>
-                                    <input type="text" class="quantity-buy js-buy-quantity js-quantity-change" value="1" data-stock="998">
-                                    <a href="javascript:void(0)" class="quantity-change js-quantity-change" data-value="1"> + </a> -->
+                                 
 
                                     <a href="javascript:void(0)" class="quantity-change js-quantity-change minus-btn" onclick="handleMinus('<%= item.id%>')" > - </a>
-                                    <input type="text" name="amount" id="<%= item.id%>" class="quantity-buy js-buy-quantity js-quantity-change" value="1" data-stock="998"disabled>
+                                    <input type="text" name="amount" id="<%= item.id%>" class="quantity-buy js-buy-quantity js-quantity-change" value="1" data-stock="998"readonly>
                                     <a href="javascript:void(0)" class="quantity-change js-quantity-change plus-btn" onclick="handlePlus('<%= item.id%>')"> + </a>
-
-                                    
-                                    <!-- <div id="buy-amount">
-                                        <button class="minus-btn" onclick="handleMinus()"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15" />
-                                          </svg>          
-                                          </button>
-                                        <input type="text" name="amount" id="amount" value="1">
-                                        <button class="plus-btn" onclick="handlePlus()"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                                          </svg>
-                                          </button>
-                                    </div> -->
-                                    
+                              
                                 </div>
+                                
             
                                 <div class="cart-col-4 font-600 red">
                                     <span class="js-total-item-price" id="price_<%= item.id%>" >
@@ -364,14 +351,44 @@
                                 </div>
             
                                 <div class="cart-col-5">
-                                    <a href="javascript:void(0)" class="js-delete-item"> <i class="fa fa-trash-o" aria-hidden="true"></i> Xoá </a>
+                                    <a href="javascript:void(0)" class="js-delete-item " onclick="Xoa_1_san_pham('<%= item.ten%>','<%= item.id%>')"> <i class="fa fa-trash-o" aria-hidden="true"></i> Xoá </a>
                                 </div>
                             </div>
                         </div>
-
+                        
                         
                         
                         <% }); %>
+
+
+                        <script type="text/javascript">
+
+                            function Xoa_1_san_pham(ten,id)  {
+                   
+                                 var result = confirm("Bạn chắc chắn muốn xóa sản phẩm: "+ ten +"?");
+                   
+                                 if(result)  {
+                                    location.href = "/delete-one-product-cart?id="+id;
+                                    //  alert("OK Next lesson!");
+                                 } else {
+                                     
+                                 }
+                            }
+
+
+                            function Xoa_toan_bo_gio_hang(email)  {
+                   
+                                var result = confirm("Bạn chắc chắn muốn xóa toàn bộ giỏ hàng ?");
+     
+                                    if(result)  {
+                                        location.href = "/delete-all-cart?email="+email;
+                                        //  alert("OK Next lesson!");
+                                    } else {
+                                    
+                                    }
+                            }
+                   
+                         </script>
                         
                     </div>
                     
@@ -382,148 +399,151 @@
                             <p class="title font-600 text-15"> ĐỊA CHỈ NHẬN HÀNG </p>
                             <div class="d-flex flex-wrap">
                                 <div class="form-info-group">
-                                    <input type="text" placeholder="Họ và tên" name="user_info[name]" id="buyer_name" value="">
+                                    <input type="text" placeholder="Họ và tên" name="user_info[name]" id="buyer_name" value="<%= data_user[0].username %>">
             
-                                    <input type="text" placeholder="Email" name="user_info[email]" id="buyer_email" value="">
+                                    <input type="text" placeholder="Email" name="user_info[email]" id="buyer_email" value="<%= data_information[0].email %>">
             
-                                    <input type="text" placeholder="Số điện thoại" name="user_info[tel]" id="buyer_tel" value="">
+                                    <input type="text" placeholder="Số điện thoại" name="user_info[tel]" id="buyer_tel" value="<%= data_information[0].phone %>">
             
-                                    <select name="user_info[province]" class="" id="buyer_province" onchange="getProvince(this.value);">
-                                        <option value="0">Tỉnh/Thành phố</option> 
+                                    <select name="province" onchange="getProvince(this.value);" class="form-input" >
+                                                   
+                                        <%if(data_information[0].province == ""){ %>
+                                            <option selected>Chọn thành phố</option>     
+                                        <% }else{ %> 
+                                       
+                                            <option value="<%= data_information[0].province %>" selected><%= data_information[0].province %></option>   
+                                            <% } %>              
                                         
-                                        <option value="1">Hà Nội</option>
+                                        <option value="Hà Nội" > Hà Nội </option>
                                         
-                                        <option value="2">TP HCM</option>
+                                        <option value="TP HCM"> TP HCM </option>
                                         
-                                        <option value="5">Hải Phòng</option>
+                                        <option value="Hải Phòng"> Hải Phòng </option>
                                         
-                                        <option value="4">Đà Nẵng</option>
+                                        <option value="Đà Nẵng"> Đà Nẵng </option>
                                         
-                                        <option value="6">An Giang</option>
+                                        <option value="An Giang"> An Giang </option>
                                         
-                                        <option value="7">Bà Rịa-Vũng Tàu</option>
+                                        <option value="Bà Rịa-Vũng Tàu"> Bà Rịa-Vũng Tàu </option>
                                         
-                                        <option value="13">Bình Dương</option>
+                                        <option value="Bình Dương"> Bình Dương </option>
                                         
-                                        <option value="15">Bình Phước</option>
+                                        <option value="Bình Phước"> Bình Phước </option>
                                         
-                                        <option value="16">Bình Thuận</option>
+                                        <option value="Bình Thuận"> Bình Thuận </option>
                                         
-                                        <option value="14">Bình Định</option>
+                                        <option value="Bình Định"> Bình Định </option>
                                         
-                                        <option value="8">Bạc Liêu</option>
+                                        <option value="Bạc Liêu"> Bạc Liêu </option>
                                         
-                                        <option value="10">Bắc Giang</option>
+                                        <option value="Bắc Giang"> Bắc Giang </option>
                                         
-                                        <option value="9">Bắc Kạn</option>
+                                        <option value="Bắc Kạn"> Bắc Kạn </option>
                                         
-                                        <option value="11">Bắc Ninh</option>
+                                        <option value="Bắc Ninh"> Bắc Ninh </option>
                                         
-                                        <option value="12">Bến Tre</option>
+                                        <option value="Bến Tre"> Bến Tre </option>
                                         
-                                        <option value="18">Cao Bằng</option>
+                                        <option value="Cao Bằng"> Cao Bằng </option>
                                         
-                                        <option value="17">Cà Mau</option>
+                                        <option value="Cà Mau"> Cà Mau </option>
                                         
-                                        <option value="3">Cần Thơ</option>
+                                        <option value="Cần Thơ"> Cần Thơ </option>
                                         
-                                        <option value="24">Gia Lai</option>
+                                        <option value="Gia Lai"> Gia Lai </option>
                                         
-                                        <option value="25">Hà Giang</option>
+                                        <option value="Hà Giang"> Hà Giang </option>
                                         
-                                        <option value="26">Hà Nam</option>
+                                        <option value="Hà Nam"> Hà Nam </option>
                                         
-                                        <option value="27">Hà Tĩnh</option>
+                                        <option value="Hà Tĩnh"> Hà Tĩnh </option>
                                         
-                                        <option value="30">Hòa Bình</option>
+                                        <option value="Hòa Bình"> Hòa Bình </option>
                                         
-                                        <option value="28">Hải Dương</option>
+                                        <option value="Hải Dương"> Hải Dương </option>
                                         
-                                        <option value="29">Hậu Giang</option>
+                                        <option value="Hậu Giang"> Hậu Giang </option>
                                         
-                                        <option value="31">Hưng Yên</option>
+                                        <option value="Hưng Yên"> Hưng Yên </option>
                                         
-                                        <option value="32">Khánh Hòa</option>
+                                        <option value="Khánh Hòa"> Khánh Hòa </option>
                                         
-                                        <option value="33">Kiên Giang</option>
+                                        <option value="Kiên Giang"> Kiên Giang </option>
                                         
-                                        <option value="34">Kon Tum</option>
+                                        <option value="Kon Tum"> Kon Tum </option>
                                         
-                                        <option value="35">Lai Châu</option>
+                                        <option value="Lai Châu"> Lai Châu </option>
                                         
-                                        <option value="38">Lào Cai</option>
+                                        <option value="Lào Cai"> Lào Cai </option>
                                         
-                                        <option value="36">Lâm Đồng</option>
+                                        <option value="Lâm Đồng"> Lâm Đồng </option>
                                         
-                                        <option value="37">Lạng Sơn</option>
+                                        <option value="Lạng Sơn"> Lạng Sơn </option>
                                         
-                                        <option value="39">Long An</option>
+                                        <option value="Long An"> Long An </option>
                                         
-                                        <option value="40">Nam Định</option>
+                                        <option value="Nam Định"> Nam Định </option>
                                         
-                                        <option value="41">Nghệ An</option>
+                                        <option value="Nghệ An"> Nghệ An </option>
                                         
-                                        <option value="42">Ninh Bình</option>
+                                        <option value="Ninh Bình"> Ninh Bình </option>
                                         
-                                        <option value="43">Ninh Thuận</option>
+                                        <option value="Ninh Thuận"> Ninh Thuận </option>
                                         
-                                        <option value="44">Phú Thọ</option>
+                                        <option value="Phú Thọ"> Phú Thọ </option>
                                         
-                                        <option value="45">Phú Yên</option>
+                                        <option value="Phú Yên"> Phú Yên </option>
                                         
-                                        <option value="46">Quảng Bình</option>
+                                        <option value="Quảng Bình"> Quảng Bình </option>
                                         
-                                        <option value="47">Quảng Nam</option>
+                                        <option value="Quảng Nam"> Quảng Nam </option>
                                         
-                                        <option value="48">Quảng Ngãi</option>
+                                        <option value="Quảng Ngãi"> Quảng Ngãi </option>
                                         
-                                        <option value="49">Quảng Ninh</option>
+                                        <option value="Quảng Ninh"> Quảng Ninh </option>
                                         
-                                        <option value="50">Quảng Trị</option>
+                                        <option value="Quảng Trị"> Quảng Trị </option>
                                         
-                                        <option value="51">Sóc Trăng</option>
+                                        <option value="Sóc Trăng"> Sóc Trăng </option>
                                         
-                                        <option value="52">Sơn La</option>
+                                        <option value="Sơn La"> Sơn La </option>
                                         
-                                        <option value="53">Tây Ninh</option>
+                                        <option value="Tây Ninh"> Tây Ninh </option>
                                         
-                                        <option value="56">Thanh Hóa</option>
+                                        <option value="Thanh Hóa"> Thanh Hóa </option>
                                         
-                                        <option value="54">Thái Bình</option>
+                                        <option value="Thái Bình"> Thái Bình </option>
                                         
-                                        <option value="55">Thái Nguyên</option>
+                                        <option value="Thái Nguyên"> Thái Nguyên </option>
                                         
-                                        <option value="57">Thừa Thiên-Huế</option>
+                                        <option value="Thừa Thiên-Huế"> Thừa Thiên-Huế </option>
                                         
-                                        <option value="58">Tiền Giang</option>
+                                        <option value="Tiền Giang"> Tiền Giang </option>
                                         
-                                        <option value="59">Trà Vinh</option>
+                                        <option value="Trà Vinh"> Trà Vinh </option>
                                         
-                                        <option value="60">Tuyên Quang</option>
+                                        <option value="Tuyên Quang"> Tuyên Quang </option>
                                         
-                                        <option value="61">Vĩnh Long</option>
+                                        <option value="Vĩnh Long"> Vĩnh Long </option>
                                         
-                                        <option value="62">Vĩnh Phúc</option>
+                                        <option value="Vĩnh Phúc"> Vĩnh Phúc </option>
                                         
-                                        <option value="63">Yên Bái</option>
+                                        <option value="Yên Bái"> Yên Bái </option>
                                         
-                                        <option value="19">Đắk Lắk</option>
+                                        <option value="Đắk Lắk"> Đắk Lắk </option>
                                         
-                                        <option value="22">Đồng Nai</option>
+                                        <option value="Đồng Nai"> Đồng Nai </option>
                                         
-                                        <option value="23">Đồng Tháp</option>
+                                        <option value="Đồng Tháp"> Đồng Tháp </option>
                                         
-                                        <option value="21">Điện Biên</option>
+                                        <option value="Điện Biên"> Điện Biên </option>
                                         
-                                        <option value="20">Đăk Nông</option>
+                                        <option value="Đăk Nông"> Đăk Nông </option>
                                         
-                                    </select> 
-            
-                                    <select name="user_info[district]" id="js-district-holder">
-                                        <option value="0">Quận/Huyện</option>
                                     </select>
+                                  
             
-                                    <input type="text" placeholder="Toà nhà, Tên đường..." id="buyer_address" name="user_info[address]" value="">
+                                    <input type="text" placeholder="Toà nhà, Tên đường..." id="buyer_address" name="user_info[address]" value="<%= data_information[0].address %>">
                                 </div>
 
                                 <div class="form-info-group clearfix">
@@ -574,6 +594,7 @@
                                 <b class="red text-22 font-600">
                                     <% if(typeof tong_gia_tien != "undefined" ){ %>
                                         <span class="js-total-cart-price" id="tong_tien"><%= tong_gia_tien[0].gia_tien %></span>.000đ
+                                        <input type="text" name="tong_tien_neu_chua_dang_nhap" id="input_tong_tien" value="" class="form-input" style="display: none;" >
                                     <% }else{ %>
             
                                         <span class="js-total-cart-price" >0</span>
@@ -589,342 +610,78 @@
                 </form>
             </div>
 
-            <script>  
-                // // console.log(amountElement);
-                // let amount = amountElement.value;
-                // // console.log(amount);
-    
-                // let render = (amount)=>{
-                //     amountElement.value= amount
-                // }
-                
-                
-
-                //Xử lý Handle Plus
-                let handlePlus=(id)=>{
-                    let amountElement = document.getElementById(id);
-                    let amount = amountElement.value;
-                    let priceText = document.getElementById("price_"+id);
-                    let price =parseInt(priceText.textContent);
-                    let defaultPrice = price/amount;
-                    let tongTienText = document.getElementById("tong_tien");
-                    let tongTien = parseInt(tongTienText.textContent);
-                    // console.log(priceText.textContent);
-                    let render = (amount,price,tongTien)=>{
-                    amountElement.value= amount;
-                    priceText.textContent=price;
-                    tongTienText.textContent=tongTien;
-                }
-                    // console.log(amount);
-                    // console.log(amountElement);
-                    amount++;
-                    price=price+defaultPrice;
-                    tongTien=tongTien+defaultPrice;
-                    render(amount,price,tongTien);
-                }
-                //Xử lý Handle Minus
-                let handleMinus=(id)=>{
-                    let amountElement = document.getElementById(id);
-                    let amount = amountElement.value;
-                    let priceText = document.getElementById("price_"+id);
-                    let price =parseInt(priceText.textContent);
-                    let defaultPrice = price/amount;
-                    let tongTienText = document.getElementById("tong_tien");
-                    let tongTien = parseInt(tongTienText.textContent);
-                    let render = (amount,price,tongTien)=>{
-                    amountElement.value= amount;
-                    priceText.textContent=price;
-                    tongTienText.textContent=tongTien;
-                }
-                    if(amount >1){
-                        amount--;
-                        price=price-defaultPrice;
-                        tongTien=tongTien-defaultPrice;
-                    }                                  
-                    render(amount,price,tongTien);
-                }
-                // amountElement.addEventListener('input',()=>{
-                //     amount = amountElement.value;
-                //     amount = parseInt(amount);
-                //     amount = (isNaN(amount)||amount==0)?1:amount;
-                //     render(amount);  
-                //     console.log(amount);
-                // });
-            </script>
+            
             <!-- chua dang nhap-->
-            <% }else{ %>
-
-                <div class="cart-page container">
-                    <form method="post" action="">
-                        <div class="cart-items-container">
-                            <div class="cart-item-header">
-                                <div class="item-header-title d-flex align-items-center justify-content-between font-600">
-                                    <p class="m-0"> THÔNG TIN GIỎ HÀNG </p>
-                                    <div>
-                                        <a href="/trang-chu" class="goHome d-inline-block "><i class="fas fa-long-arrow-alt-left" aria-hidden="true"></i> CHỌN TIẾP SẢN PHẨM KHÁC </a>
-                                        <a href="javascript:void(0);" class=" d-inline-block js-delete-cart" onclick="$('.js-delete-item').click()"> XOÁ GIỎ HÀNG </a>
-                                    </div>
-                                </div>
-                                <div class="col-header cart-col-row text-15 font-300">
-                                    <div class="cart-col-1"> Sản phẩm </div>
-                                    <div class="cart-col-2"> Đơn giá </div>
-                                    <div class="cart-col-3"> Số lượng </div>
-                                    <div class="cart-col-4"> Số tiền </div>
-                                    <div class="cart-col-5"> Thao tác </div>
-                                </div>
-                            </div>
-    
-                            <div class="cart-item-body">
-                                <div class="item-cart cart-col-row js-item-row" data-variant_id="0" data-item_id="750" data-item_type="product">
-                                    <div class="cart-col-1">
-                                        <a href="/pad-33-sleep-bear" class="img">
-                                            <img src="<%= data_product[0].anh %>">                  
-                                        </a>
-                
-                                        <div class="text">
-                                            <a href="/pad-33-sleep-bear" class="d-inline-block font-700"> <%= data_product[0].ten %> </a>                    
-                                            <span class="d-block p-info"> <%= data_product[0].ma_san_pham %> </span>
-        
-                                        </div>
-                                    </div>
-                
-                                    <div class="cart-col-2">
-                                        <input type="hidden" class="js-buy-price" data-price="60000"> 
-                                        <%= data_product[0].gia_tien %>
-                                    </div>
-                
-                                    <div class="cart-col-3 clearfix">
-                                        <a href="javascript:void(0)" class="quantity-change js-quantity-change" data-value="-1"> - </a>
-                                        <input type="text" class="quantity-buy js-buy-quantity js-quantity-change" value="1" data-stock="998">
-                                        <a href="javascript:void(0)" class="quantity-change js-quantity-change" data-value="1"> + </a>
-                                    </div>
-                
-                                    <div class="cart-col-4 font-600 red">
-                                        <span class="js-total-item-price">
-                                             60.000
-                                            
-                                        </span> đ
-                                    </div>
-                
-                                    <div class="cart-col-5">
-                                        <a href="javascript:void(0)" class="js-delete-item"> <i class="fa fa-trash-o" aria-hidden="true"></i> Xoá </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-    
-    
-                        <div class="cart-customer-container clearfix d-block">
-                            <div class="customer-left">
-                                <p class="title font-600 text-15"> ĐỊA CHỈ NHẬN HÀNG </p>
-                                <div class="d-flex flex-wrap">
-                                    <div class="form-info-group">
-                                        <input type="text" placeholder="Họ và tên" name="user_info[name]" id="buyer_name" value="">
-                
-                                        <input type="text" placeholder="Email" name="user_info[email]" id="buyer_email" value="">
-                
-                                        <input type="text" placeholder="Số điện thoại" name="user_info[tel]" id="buyer_tel" value="">
-                
-                                        <select name="user_info[province]" class="" id="buyer_province" onchange="getProvince(this.value);">
-                                            <option value="0">Tỉnh/Thành phố</option> 
-                                            
-                                            <option value="1">Hà Nội</option>
-                                            
-                                            <option value="2">TP HCM</option>
-                                            
-                                            <option value="5">Hải Phòng</option>
-                                            
-                                            <option value="4">Đà Nẵng</option>
-                                            
-                                            <option value="6">An Giang</option>
-                                            
-                                            <option value="7">Bà Rịa-Vũng Tàu</option>
-                                            
-                                            <option value="13">Bình Dương</option>
-                                            
-                                            <option value="15">Bình Phước</option>
-                                            
-                                            <option value="16">Bình Thuận</option>
-                                            
-                                            <option value="14">Bình Định</option>
-                                            
-                                            <option value="8">Bạc Liêu</option>
-                                            
-                                            <option value="10">Bắc Giang</option>
-                                            
-                                            <option value="9">Bắc Kạn</option>
-                                            
-                                            <option value="11">Bắc Ninh</option>
-                                            
-                                            <option value="12">Bến Tre</option>
-                                            
-                                            <option value="18">Cao Bằng</option>
-                                            
-                                            <option value="17">Cà Mau</option>
-                                            
-                                            <option value="3">Cần Thơ</option>
-                                            
-                                            <option value="24">Gia Lai</option>
-                                            
-                                            <option value="25">Hà Giang</option>
-                                            
-                                            <option value="26">Hà Nam</option>
-                                            
-                                            <option value="27">Hà Tĩnh</option>
-                                            
-                                            <option value="30">Hòa Bình</option>
-                                            
-                                            <option value="28">Hải Dương</option>
-                                            
-                                            <option value="29">Hậu Giang</option>
-                                            
-                                            <option value="31">Hưng Yên</option>
-                                            
-                                            <option value="32">Khánh Hòa</option>
-                                            
-                                            <option value="33">Kiên Giang</option>
-                                            
-                                            <option value="34">Kon Tum</option>
-                                            
-                                            <option value="35">Lai Châu</option>
-                                            
-                                            <option value="38">Lào Cai</option>
-                                            
-                                            <option value="36">Lâm Đồng</option>
-                                            
-                                            <option value="37">Lạng Sơn</option>
-                                            
-                                            <option value="39">Long An</option>
-                                            
-                                            <option value="40">Nam Định</option>
-                                            
-                                            <option value="41">Nghệ An</option>
-                                            
-                                            <option value="42">Ninh Bình</option>
-                                            
-                                            <option value="43">Ninh Thuận</option>
-                                            
-                                            <option value="44">Phú Thọ</option>
-                                            
-                                            <option value="45">Phú Yên</option>
-                                            
-                                            <option value="46">Quảng Bình</option>
-                                            
-                                            <option value="47">Quảng Nam</option>
-                                            
-                                            <option value="48">Quảng Ngãi</option>
-                                            
-                                            <option value="49">Quảng Ninh</option>
-                                            
-                                            <option value="50">Quảng Trị</option>
-                                            
-                                            <option value="51">Sóc Trăng</option>
-                                            
-                                            <option value="52">Sơn La</option>
-                                            
-                                            <option value="53">Tây Ninh</option>
-                                            
-                                            <option value="56">Thanh Hóa</option>
-                                            
-                                            <option value="54">Thái Bình</option>
-                                            
-                                            <option value="55">Thái Nguyên</option>
-                                            
-                                            <option value="57">Thừa Thiên-Huế</option>
-                                            
-                                            <option value="58">Tiền Giang</option>
-                                            
-                                            <option value="59">Trà Vinh</option>
-                                            
-                                            <option value="60">Tuyên Quang</option>
-                                            
-                                            <option value="61">Vĩnh Long</option>
-                                            
-                                            <option value="62">Vĩnh Phúc</option>
-                                            
-                                            <option value="63">Yên Bái</option>
-                                            
-                                            <option value="19">Đắk Lắk</option>
-                                            
-                                            <option value="22">Đồng Nai</option>
-                                            
-                                            <option value="23">Đồng Tháp</option>
-                                            
-                                            <option value="21">Điện Biên</option>
-                                            
-                                            <option value="20">Đăk Nông</option>
-                                            
-                                        </select> 
-                
-                                        <select name="user_info[district]" id="js-district-holder">
-                                            <option value="0">Quận/Huyện</option>
-                                        </select>
-                
-                                        <input type="text" placeholder="Toà nhà, Tên đường..." id="buyer_address" name="user_info[address]" value="">
-                                    </div>
-    
-                                    <div class="form-info-group clearfix">
-                                        <textarea placeholder="Nhập ghi chú cho chúng tôi" name="user_info[note]" id="buyer_note"></textarea>
-                                        <div class="cart-btn-group clearfix">
-                                            <a href="javascript:void(0)" onclick="downloadCartImage()"><i class="far fa-image" aria-hidden="true"></i> TẢI ẢNH ĐƠN HÀNG</a>
-                                            <a href="/export_file.php?file_type=xls&amp;content_type=shopping-cart" target="_blank" rel="nofollow"><i class="far fa-file-excel" aria-hidden="true"></i> TẢI FILE EXCEL</a>
-                                            <a href="/print/user.php?view=cart" target="_blank" rel="nofollow"><i class="fas fa-print" aria-hidden="true"></i> IN BÁO GIÁ</a>
-                                        </div>
-                                    </div>
-                                    
-                                </div>
-                            </div>
-                            <div class="customer-right">
-                                <p class="title  font-600 text-15"> HÌNH THỨC THANH TOÁN </p>
-                                <div class="payment" style="margin-bottom: 60px;">
-                        
-                        
-                        
-                                    <label class="label-container">
-                                        <input type="radio" id="pay_method_1" name="pay_method" value="1" checked="">
-                                        <span class="checkmark"></span>
-                                        <span>Thanh toán tiền mặt khi nhận hàng</span>
-                
-                                        <div class="payment-detail" style="display: none;"></div>
-                                    </label>
-                                    
-                                    
-                                    <label class="label-container">
-                                        <input type="radio" id="pay_method_2" name="pay_method" value="2">
-                                        <span class="checkmark"></span>
-                                        <span>Thanh toán qua chuyển khoản</span>
-                
-                                        <div class="payment-detail" style="display: none;">- STK: 000.0000.0000
-                                            - Chủ Tk: Nguyễn Văn A
-                                                - Chi nhánh: Hà Nội
-                                        </div>
-                                    </label>
-                                    
-                                </div>
-    
-                                <div class="text-right text-13 cart-total-price-group">
-                                    Tổng tiền hàng (<span class="red" id="js-total-quantity">2 sản phẩm</span>):
-                                    <b class="red text-22 font-600">
-                                        <span class="js-total-cart-price">95.000đ</span>
-                                    </b>
-                                </div>
-                                <div class="clearfix cart-button-buy">
-                                    <button type="submit" class="w-100 js-send-cart font-weight-bold text-18"> ĐẶT MUA NGAY </button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-
-
-
-                
-
-                <% } %>
+           
                 
         </div>
 
-       
+        <script>  
+            // // console.log(amountElement);
+            // let amount = amountElement.value;
+            // // console.log(amount);
+
+            // let render = (amount)=>{
+            //     amountElement.value= amount
+            // }
+            
+            
+
+            //Xử lý Handle Plus
+            let handlePlus=(id)=>{
+                let amountElement = document.getElementById(id);
+                let amount = amountElement.value;
+                let priceText = document.getElementById("price_"+id);
+                let price =parseInt(priceText.textContent);
+                let defaultPrice = price/amount;
+                let tongTienText = document.getElementById("tong_tien");
+                let tongTien = parseInt(tongTienText.textContent);
+                let input_tong_tien = document.getElementById('input_tong_tien');
+                // console.log(priceText.textContent);
+                let render = (amount,price,tongTien)=>{
+                amountElement.value= amount;
+                priceText.textContent=price;
+                tongTienText.textContent=tongTien;
+                input_tong_tien.value=tongTien;
+            }
+                // console.log(amount);
+                // console.log(amountElement);
+                amount++;
+                price=price+defaultPrice;
+                tongTien=tongTien+defaultPrice;
+                render(amount,price,tongTien);
+            }
+            //Xử lý Handle Minus
+            let handleMinus=(id)=>{
+                let amountElement = document.getElementById(id);
+                let amount = amountElement.value;
+                let priceText = document.getElementById("price_"+id);
+                let price =parseInt(priceText.textContent);
+                let defaultPrice = price/amount;
+                let tongTienText = document.getElementById("tong_tien");
+                let tongTien = parseInt(tongTienText.textContent);
+                let input_tong_tien = document.getElementById('input_tong_tien');
+                let render = (amount,price,tongTien)=>{
+                amountElement.value= amount;
+                priceText.textContent=price;
+                tongTienText.textContent=tongTien;
+                input_tong_tien.value=tongTien;
+            }
+                if(amount >1){
+                    amount--;
+                    price=price-defaultPrice;
+                    tongTien=tongTien-defaultPrice;
+                }                                  
+                render(amount,price,tongTien);
+            }
+            // amountElement.addEventListener('input',()=>{
+            //     amount = amountElement.value;
+            //     amount = parseInt(amount);
+            //     amount = (isNaN(amount)||amount==0)?1:amount;
+            //     render(amount);  
+            //     console.log(amount);
+            // });
+        </script>
         
     </main>
 
@@ -1110,5 +867,59 @@
            
         </div>
     </footer>
+
+
+
+    <!--Modal -->
+    <div id="modal-container">
+        <div class="modal" id="modal-demo">
+            <div class="modal-header">
+                <h2>THÔNG BÁO</h2>
+                <button id="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <p>Bạn chắc chắn muốn xóa chứ?</p>
+                <a href="javascript:void(0)" style="font-size: 20px; font-weight: bold;  color: red!important;">CÓ</a>
+                <a href="javascript:void(0)" id="btn-close-modal-2" style="float: right; font-size: 20px; font-weight: bold;">KHÔNG</a>
+            </div>
+        </div>
+    </div>
+    <!--End Modal -->    
+
+
+    <script>
+                    
+        const btn_close_modal = document.getElementById('btn-close-modal');
+        const btn_close_modal_2 = document.getElementById('btn-close-modal-2');
+        const modal_container = document.getElementById('modal-container');
+        const modal_demo = document.getElementById('modal-demo');
+
+        const btn_open_modal_cart = document.getElementsByClassName("btn-open-modal-delete");
+        for (let i = 0; i < btn_open_modal_cart.length; i++) {
+            btn_open_modal_cart[i].addEventListener('click', ()=>{
+            // Add class .show
+            modal_container.classList.add('show');
+            });
+        }
+        
+
+        btn_close_modal.addEventListener('click', ()=>{
+            // Add class .show
+            modal_container.classList.remove('show');
+        });
+
+        btn_close_modal_2.addEventListener('click', ()=>{
+            // Add class .show
+            modal_container.classList.remove('show');
+        });
+
+        modal_container.addEventListener('click',(e)=>{
+            if(!modal_demo.contains(e.target)){
+                btn_close_modal.click();
+            }
+    
+        });
+
+    </script>
 </body>
 </html>
