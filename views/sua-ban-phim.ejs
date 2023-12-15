@@ -55,17 +55,17 @@
                 <div class="navbar-nav w-100">
                     <a href="quan-ly" class="nav-item nav-link "><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Quản lý tài khoản</a>
+                        <a href="#" class="nav-link dropdown-toggle " data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Quản lý tài khoản</a>
                         <div class="dropdown-menu bg-transparent border-0">
                             <a href="quan-ly-tai-khoan" class="dropdown-item">Xem danh sách</a>
-                            <a href="them-tai-khoan" class="dropdown-item active">Thêm tài khoản</a>
+                            <a href="them-tai-khoan" class="dropdown-item">Thêm tài khoản</a>
                         </div>
                     </div>
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle " data-bs-toggle="dropdown"><i class="fa fa-th me-2"></i>Quản lý sản phẩm</a>
+                        <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown"><i class="fa fa-th me-2"></i>Quản lý sản phẩm</a>
                         <div class="dropdown-menu bg-transparent border-0">
                             <a href="quan-ly-lot-chuot" class="dropdown-item ">Lót chuột</a>
-                            <a href="quan-ly-ban-phim" class="dropdown-item">Bàn phím</a>
+                            <a href="quan-ly-ban-phim" class="dropdown-item active">Bàn phím</a>
                         </div>
                     </div>
                     <a href="form.html" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Forms</a>
@@ -180,36 +180,96 @@
 
             <div class="container-fluid pt-4 px-4">
                 <div class="row g-4">
-                    <h3>Thêm mới tài khoản</h3>
-                    <form action="them-tai-khoan" method="post">
+                    <a href="/quan-ly-ban-phim"><button type="button" class="btn btn-light">Quay trở lại</button></a>
+                    <h3 style="color: #29A07E">Sửa bàn phím</h3>
+                    <form action="sua-ban-phim" method="post" enctype="multipart/form-data">
+
                         <div class="mb-3">
-                            <label for="email" class="form-label">Email address</label>
-                            <input type="email" class="form-control" id="email" placeholder="name@example.com" name="email">
-                          </div>
-                          <div class="mb-3">
-                            <label for="username" class="form-label">Tên người dùng</label>
-                            <input type="text" class="form-control" id="username" placeholder="username" name="username">
-                          </div>
+                            <label for="id" class="form-label">Id: </label>
+                            <input type="text" class="form-control" id="id" readonly  name="id" value="<%= data_banPhim[0].id %>">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="ten" class="form-label">Tên bàn phím: </label>
+                            <input type="text" class="form-control" id="ten"  name="ten"  value="<%= data_banPhim[0].ten %>">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="nhom" class="form-label">Nhóm: </label>
+                            <input type="text" class="form-control" id="nhom"  name="nhom" value="<%= data_banPhim[0].nhom %>">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="tuy_chon_san_pham" class="form-label">Tùy chọn sản phẩm: </label>
+                            <input type="text" class="form-control" id="tuy_chon_san_pham"  name="tuy_chon_san_pham" value="<%= data_banPhim[0].tuy_chon_san_pham %>">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="ma_san_pham" class="form-label">Mã sản phẩm: (Mã sản phẩm mới nhất là: PAD9999)</label>
+                            <input type="text" class="form-control" id="ma_san_pham" value="<%= data_banPhim[0].ma_san_pham %>" name="ma_san_pham">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="anh" class="form-label">Ảnh hiện tại</label>
+                            <input type="text" class="form-control" id="anh_cu"  name="anh_cu" value="<%= data_banPhim[0].anh %>" readonly>
+                            <br>
+                            <img src="<%= data_banPhim[0].anh %>" style="width: 300px;" alt="" srcset="">
+                            <br>
+                            <br>
+                            <label for="anh" class="form-label">Hoặc chọn ảnh mới</label>
+                            <input type="file" class="form-control" id="anh"  name="anh">
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="input-group">
+                                <span class="input-group-text">Thông số: </span>
+                                <textarea style="height: 250px;" type="text" class="form-control" aria-label="With textarea" name="thong_so"><%= data_banPhim[0].thong_so %></textarea>
+                            </div>
+                        </div>
+
+                       
+
+                        <div class="mb-3">
+                            <label for="tu_khoa" class="form-label">Từ khóa: </label>
+                            <input type="text" class="form-control" id="tu_khoa"  name="tu_khoa" value="<%= data_banPhim[0].tu_khoa %>">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="the_loai" class="form-label">Thể loại: </label>
+                            <select class="form-select" aria-label="Default select example" id="the_loai" name="the_loai">
+                                <% data_the_loai.forEach(item=> { %>
+                                        <option value="<%=item.the_loai%>" <%if( data_banPhim[0].the_loai == item.the_loai){ %> selected <% } %>> <%=item.ten_the_loai%> </option> 
+                                
+                                <% }); %>
+                            </select>
+                        </div>
+                    
+                        <div class="mb-3">
+                            <label for="dac_diem" class="form-label">Đặc điểm: </label>
+                            <input type="text" class="form-control" value="Đang cập nhật...!" id="dac_diem" name="dac_diem" readonly>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="hang_san_xuat" class="form-label">Hãng sản xuất: </label>
+                            <select class="form-select" aria-label="Default select example" id="hang_san_xuat" name="hang_san_xuat">
+                                <% data_hang_sx.forEach(item=> { %>   
+                                        <option value="<%=item.hang_san_xuat%>" <%if( data_banPhim[0].hang_san_xuat == item.hang_san_xuat){ %> selected <% } %> > <%=item.hang_san_xuat%> </option> 
+                                <% }); %>
+
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="so_luong" class="form-label">Số lượng: </label>
+                            <input type="text" class="form-control"  id="so_luong" name="so_luong" value="<%= data_banPhim[0].so_luong %>">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="gia_tien" class="form-label">Giá tiền: (nghìn đồng)</label>
+                            <input type="text" class="form-control"  id="gia_tien" name="gia_tien" value="<%= data_banPhim[0].gia_tien %>">
+                        </div>
     
-                          <div class="mb-3">
-                            <label for="authority_id" class="form-label">Chọn quyền truy cập</label>
-                            <select class="form-select" aria-label="Default select example" id="authority_id" name="authority_id">
-                                <option selected>Nhấp để mở lựa chọn</option>
-                                <option value="1">Admin</option>
-                                <option value="2">Khách hàng</option>
-                              </select>
-                          </div>
-                          <div class="mb-3">
-                            <label for="password" class="form-label">Nhập mật khẩu</label>
-                            <input type="password" class="form-control" id="password" placeholder="password" name="password">
-                          </div>
-                          <div class="mb-3">
-                            <label for="repassword" class="form-label">Nhập lại mật khẩu</label>
-                            <input type="password" class="form-control" id="repassword" placeholder="password" name="repassword">
-                          </div>
-    
-    
-                          <button type="submit" class="btn btn-success">Tạo tài khoản</button>
+                        <button type="submit" class="btn btn-success">Lưu thay đổi</button>
                     </form>
                     
                      

@@ -311,10 +311,19 @@
 
                         <li itemprop="itemListElement" itemscope
                             itemtype="http://schema.org/ListItem">
-                            <a href="/ban-phim-gaming"
+                            <%if( the_loai_current == 'ban-phim-co'){ %> 
+                                <a href="/ban-phim-co"
                                 itemprop="item" class="nopad-l">
-                                <span itemprop="name"> Bàn phím </span>
-                            </a>
+                                <span itemprop="name">Bàn phím cơ </span>
+                                </a>
+                            <% } %>
+                            <%if( the_loai_current == 'ban-phim-gia-co'){  %> 
+                                <a href="/ban-phim-gia-co"
+                                itemprop="item" class="nopad-l">
+                                <span itemprop="name">Bàn phím giả cơ </span>
+                                </a>
+                            <% } %>
+                            
                             <meta itemprop="position" content="2">
                         </li>
                     </ol>
@@ -327,43 +336,40 @@
                                 <p class="box-title">HÃNG SẢN XUẤT</p>
                         
                                 <div class="filter-list">
-                                    
-                                    <a href="https://lacdau.com/lot-chuot?brand=2">
-                                        <i class="icon-square"></i>
-                                        <span class="title">AKKO</span>
-                                    </a>
-                                    
-                                    <a href="https://lacdau.com/lot-chuot?brand=1">
-                                        <i class="icon-square"></i>
-                                        <span class="title">CIDOO</span>
-                                    </a>
-                                    
-                                    <a href="https://lacdau.com/lot-chuot?brand=48">
-                                        <i class="icon-square"></i>
-                                        <span class="title">DAREU</span>
-                                    </a>
+                                    <%if( the_loai_current == 'ban-phim-co'){ %> 
 
-                                    <a href="https://lacdau.com/lot-chuot?brand=48">
-                                        <i class="icon-square"></i>
-                                        <span class="title">DARMOSHARK</span>
-                                    </a>
+                                        <% data_hang_sx.forEach(item=> { %>  
+                                            <%if( item.hang_san_xuat == hang_SX_current){ %> 
+                                                <a href="ban-phim-co" class="current">
+                                                    <i class="icon-square"></i>
+                                                    <span class="title"><%= item.hang_san_xuat %></span>
+                                                </a>
+                                            <% }else{%> 
+                                            <a href="ban-phim-co?brand=<%= item.hang_san_xuat %>" >
+                                                <i class="icon-square"></i>
+                                                <span class="title"><%= item.hang_san_xuat %></span>
+                                            </a>
+                                            <% } %>
+                                        <% }); %>  
+                                    <% } %>
+
+                                    <%if( the_loai_current == 'ban-phim-gia-co'){  %> 
+                                        <% data_hang_sx.forEach(item=> { %>  
+                                            <%if( item.hang_san_xuat == hang_SX_current){ %> 
+                                                <a href="ban-phim-gia-co" class="current">
+                                                    <i class="icon-square"></i>
+                                                    <span class="title"><%= item.hang_san_xuat %></span>
+                                                </a>
+                                            <% }else{%> 
+                                            <a href="ban-phim-gia-co?brand=<%= item.hang_san_xuat %>" >
+                                                <i class="icon-square"></i>
+                                                <span class="title"><%= item.hang_san_xuat %></span>
+                                            </a>
+                                            <% } %>
+                                        <% }); %>
+
+                                    <% } %>
                                     
-                                    <a href="https://lacdau.com/lot-chuot?brand=48">
-                                        <i class="icon-square"></i>
-                                        <span class="title">EDRA</span>
-                                    </a>
-                                    <a href="https://lacdau.com/lot-chuot?brand=48">
-                                        <i class="icon-square"></i>
-                                        <span class="title">ESONNE</span>
-                                    </a>
-                                    <a href="https://lacdau.com/lot-chuot?brand=48">
-                                        <i class="icon-square"></i>
-                                        <span class="title">HJK</span>
-                                    </a>
-                                    <a href="https://lacdau.com/lot-chuot?brand=48">
-                                        <i class="icon-square"></i>
-                                        <span class="title">MOFII</span>
-                                    </a>
                                 </div>
                         
                                 <!-- <div class="filter-btn-holder">
@@ -634,8 +640,9 @@
 
                             </div>
                             <div class="p-container">
-                                <% data_banPhim.forEach(item=> { %>
-                                <div class="p-item">
+                                <% data_banPhim.forEach(item=> { %>   
+                                   
+                                <div class="p-item " >
                                     <a href="/chi-tiet-ban-phim?id=<%= item.id%>" class="p-img">
                                         <img src="<%= item.anh%>" data-src="<%= item.anh%>" alt="PAD 22 SLEEP BEAR" width="250" height="250" class="lazy loaded" data-was-processed="true">
                                         
@@ -689,19 +696,20 @@
                                     </div>
                                 </div>
                                 <% }); %>
-
-                                
-
-
+                            
+                            
+                            
 
                             </div>
-
+                            
                             <div class="paging">
                                 <% for (var i = 0; i < data_banPhim.length/15; i++) { %>  
                                     <%    if(i==0){%> 
-                                        <a href="/ban-phim" class="current"> <%= i+1 %> </a>
+                                        <!-- <a href="/ban-phim" class="current"> <%= i+1 %> </a> -->
+                                        <a href="javascript:void(0)" class="current" > <%= i+1 %> </a>
                                         <% }else{ %>  
-                                         <a href="/ban-phim?page=<%= i+1 %>"> <%= i+1 %> </a>
+                                         <!-- <a href="/ban-phim?page=<%= i+1 %>"> <%= i+1 %> </a> -->
+                                         <a href="javascript:void(0)" > <%= i+1 %> </a>
                                          <% } %>        
                                   
                                 <% } %>                            
@@ -710,12 +718,13 @@
                                 <a href="/lot-chuot?page=4"> 4 </a>                            
                                 <a href="/lot-chuot?page=5"> 5 </a>
                                 <a href="/lot-chuot?page=6"> 6 </a>
-                                <a href="/lot-chuot?page=7"> 7 </a> -->
-                                
-                                                               
+                                <a href="/lot-chuot?page=7"> 7 </a> -->                                                            
                             </div>
+
+
+                            
                             <div class="static-html-group js-static-container">
-                                <div class="js-static-content"><p>Bàn phím Lắc Đầu giá tốt nhất thị trường.....</p></div>
+                                <div class="js-static-content"><p>Bàn phím Lắc Đầu giá tốt nhất thị trường..... </p></div>
                     
                                 <!-- <div class="btn-html-content">
                                     <a href="javascript:void(0)" class="js-showmore-button">Xem thêm <i class="fas fa-chevron-right" aria-hidden="true"></i></a>

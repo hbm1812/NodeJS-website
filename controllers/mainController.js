@@ -9,6 +9,7 @@ const path = require('path');
 
 
 const { body, validationResult } = require('express-validator');
+const multer = require('multer');
 
 
 const validationRules_users = [
@@ -16,7 +17,6 @@ const validationRules_users = [
   body('email').isEmail().withMessage('Email không hợp lệ'),
   body('password').isLength({ min: 5 }).withMessage('Mật khẩu ít nhất có 5 ký tự'),
 ];
-
 
 
 // Route để hiển thị dữ liệu
@@ -601,8 +601,18 @@ router.get('/them-lot-chuot', async (req, res) => {
   res.end();
 });
 
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: "./views/assets/media/product/",
+    filename: (req, file, cb) => {
+      cb(null, file.originalname);
+    },
+  }),
+});
+
+
 //Route thêm lót chuột
-router.post('/them-lot-chuot', async (req, res) => {
+router.post('/them-lot-chuot',  upload.single("anh"), async (req, res) => {
   try {
     let tu_khoa = req.body.tu_khoa;
     let do_day = req.body.do_day;
@@ -610,14 +620,24 @@ router.post('/them-lot-chuot', async (req, res) => {
     let kich_thuoc = req.body.kich_thuoc;
     let ten= req.body.ten;
     let ma_san_pham = req.body.ma_san_pham;
-    let anh = req.body.anh;
+    // let anh = req.body.anh;
     let thong_so = req.body.thong_so;
     let dac_diem = req.body.dac_diem;
     let hang_san_xuat = req.body.hang_san_xuat;
     let gia_tien= req.body.gia_tien;
     let so_luong= req.body.so_luong;
+    
+    const anh = req.file;
+    link_anh= "/assets/media/product/"+anh.filename;
+    // anh.mv("./assets/media/product/" + anh.filename, (err) => {
+    //   if (err) {
+    //     res.status(500).send(err);
+    //   } else {
+    //     res.send("Lưu ảnh thành công!");
+    //   }
+    // });
 
-    let data = { tu_khoa, do_day, chu_de_key, kich_thuoc, ten, ma_san_pham, anh, thong_so, dac_diem, hang_san_xuat, gia_tien, so_luong };
+    let data = { tu_khoa, do_day, chu_de_key, kich_thuoc, ten, ma_san_pham, link_anh, thong_so, dac_diem, hang_san_xuat, gia_tien, so_luong };
     // console.log(data);
     await dataModel.createNewLotChuot(data);
 
@@ -647,7 +667,7 @@ router.get('/sua-lot-chuot', async (req, res) => {
 
 
 //sửa lót chuột
-router.post('/sua-lot-chuot', async (req, res) => {
+router.post('/sua-lot-chuot',  upload.single("anh"), async (req, res) => {
   try {
     let id = req.body.id;
     let tu_khoa = req.body.tu_khoa;
@@ -656,16 +676,34 @@ router.post('/sua-lot-chuot', async (req, res) => {
     let kich_thuoc = req.body.kich_thuoc;
     let ten= req.body.ten;
     let ma_san_pham = req.body.ma_san_pham;
-    let anh = req.body.anh;
+    // let anh = req.body.anh;
     let thong_so = req.body.thong_so;
     let dac_diem = req.body.dac_diem;
     let hang_san_xuat = req.body.hang_san_xuat;
     let gia_tien= req.body.gia_tien;
     let so_luong= req.body.so_luong;
+    let anh_cu =req.body.anh_cu;
 
-    let data = { tu_khoa, do_day, chu_de_key, kich_thuoc, ten, ma_san_pham, anh, thong_so, dac_diem, hang_san_xuat, gia_tien, so_luong,id };
-    // console.log(data);
-    await dataModel.updateLotChuot(data);
+    const anh = req.file;
+    
+
+    if (anh) {
+      // `req.file` tồn tại
+      let link_anh = "/assets/media/product/"+anh.filename;
+      let data = { tu_khoa, do_day, chu_de_key, kich_thuoc, ten, ma_san_pham, link_anh, thong_so, dac_diem, hang_san_xuat, gia_tien, so_luong,id };
+      // console.log(data);
+      await dataModel.updateLotChuot(data);
+    } else {
+      // `req.file` không tồn tại
+      let link_anh =anh_cu;
+      let data = { tu_khoa, do_day, chu_de_key, kich_thuoc, ten, ma_san_pham, link_anh, thong_so, dac_diem, hang_san_xuat, gia_tien, so_luong,id };
+      // console.log(data);
+      await dataModel.updateLotChuot(data);
+    }
+
+    
+    
+    
 
     // let users_id = await dataModel.getIdUsersByEmail(email);
     res.redirect('/sua-lot-chuot?id='+id); 
@@ -674,6 +712,7 @@ router.post('/sua-lot-chuot', async (req, res) => {
     res.status(500).send('Lỗi trong quá trình thêm dữ liệu');
   }
 });
+
 
 //xóa lót chuột
 router.get('/xoa-lot-chuot', async (req, res) => {
@@ -688,48 +727,264 @@ router.get('/xoa-lot-chuot', async (req, res) => {
 });
 
 
-//route hiển thị trang bàn phím cơ
-router.get('/ban-phim-co', async (req, res) => {
-  let the_loai_current = "ban-phim-co";
-  const data_banPhim = await dataModel.getDataBanPhim_theLoai(the_loai_current);
-  let count_ban_phim = await dataModel.getCountBanPhim(the_loai_current);
+//quản lý bàn phím
+// Route để hiển thị trang quản lý bàn phím
+router.get('/quan-ly-ban-phim', async (req, res) => {
+
   if (req.session.loggedin) {
     const data_user = await dataModel.getDataUsers(req.session.email, req.session.password);
-    const data_cart = await dataModel.showCart(req.session.email);
-    const count_cart = await dataModel.countCart(req.session.email);
-    const tong_gia_tien = await dataModel.sumCart(req.session.email);
-    
-    // console.log({data_LotChuot});
-    res.render('ban-phim', { data_user,the_loai_current, data_banPhim,data_cart, count_cart, tong_gia_tien, count_ban_phim});
-
-
+    // console.log({data_user});
+    let data_banPhim = await dataModel.getDataBanPhim();
+    let count = await dataModel.getCountBanPhimAll();
+    res.render('quan-ly-ban-phim', { data_user, data_banPhim, count });
   } else {
-    //  console.log({chu_de_key_current});
-    res.render('ban-phim', {data_banPhim,the_loai_current, count_ban_phim});
+    // Not logged in
+    // response.send('Please login to view this page!');
+    res.render('trang-chu');
   }
   res.end();
 });
 
+
+
+// Route để hiển thị trang thêm bàn phím
+router.get('/them-ban-phim', async (req, res) => {
+  if (req.session.loggedin) {
+    const data_user = await dataModel.getDataUsers(req.session.email, req.session.password);
+    // console.log({data_user});
+    let table ="ban_phim";
+    let data_hang_sx = await dataModel.selectHangSX(table);
+    let data_the_loai = await dataModel.selectTheLoai(table);
+    
+    res.render('them-ban-phim', { data_user, data_hang_sx, data_the_loai });
+  } else {
+    // Not logged in
+    // response.send('Please login to view this page!');
+    res.render('trang-chu');
+  }
+  res.end();
+});
+
+
+//Route thêm bàn phím
+router.post('/them-ban-phim',  upload.single("anh"), async (req, res) => {
+  try {
+    let tu_khoa = req.body.tu_khoa;
+    let the_loai = req.body.the_loai;
+    let ten= req.body.ten;
+    let ma_san_pham = req.body.ma_san_pham;
+    // let anh = req.body.anh;
+    let thong_so = req.body.thong_so;
+    let dac_diem = req.body.dac_diem;
+    let hang_san_xuat = req.body.hang_san_xuat;
+    let gia_tien = req.body.gia_tien;
+    let so_luong = req.body.so_luong;
+    let tuy_chon_san_pham = req.body.tuy_chon_san_pham;
+    let nhom = req.body.nhom;
+    
+    const anh = req.file;
+    link_anh = "/assets/media/product/"+anh.filename;
+    // anh.mv("./assets/media/product/" + anh.filename, (err) => {
+    //   if (err) {
+    //     res.status(500).send(err);
+    //   } else {
+    //     res.send("Lưu ảnh thành công!");
+    //   }
+    // });
+
+    let data = { tu_khoa, the_loai,  ten, ma_san_pham, link_anh, thong_so, dac_diem, hang_san_xuat, gia_tien, so_luong, tuy_chon_san_pham, nhom };
+    // console.log(data);
+    await dataModel.createNewBanPhim(data);
+
+    // let users_id = await dataModel.getIdUsersByEmail(email);
+    res.redirect('/them-ban-phim'); 
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Lỗi trong quá trình thêm dữ liệu');
+  }
+});
+
+
+
+// Route để hiển thị trang sửa bàn phím
+router.get('/sua-ban-phim', async (req, res) => {
+  if (req.session.loggedin) {
+    const data_user = await dataModel.getDataUsers(req.session.email, req.session.password);
+    // console.log({data_user});
+    var id = req.query.id;
+    let data_banPhim = await dataModel.selectOneBanPhimById(id);
+    let table ="ban_phim";
+    let data_hang_sx = await dataModel.selectHangSX(table);
+    let data_the_loai = await dataModel.selectTheLoai(table);
+    // console.log(table, data_banPhim[0].hang_san_xuat);
+    res.render('sua-ban-phim', { data_user, data_banPhim, data_hang_sx, data_the_loai});
+  } else {
+    // Not logged in
+    // response.send('Please login to view this page!');
+    res.render('trang-chu');
+  }
+  res.end();
+});
+
+
+//sửa bàn phím
+router.post('/sua-ban-phim',  upload.single("anh"), async (req, res) => {
+  try {
+    let id = req.body.id;
+    let tu_khoa = req.body.tu_khoa;
+    let the_loai = req.body.the_loai;
+    let ten= req.body.ten;
+    let ma_san_pham = req.body.ma_san_pham;
+    // let anh = req.body.anh;
+    let thong_so = req.body.thong_so;
+    let dac_diem = req.body.dac_diem;
+    let hang_san_xuat = req.body.hang_san_xuat;
+    let gia_tien = req.body.gia_tien;
+    let so_luong = req.body.so_luong;
+    let tuy_chon_san_pham = req.body.tuy_chon_san_pham;
+    let anh_cu =req.body.anh_cu;
+    let nhom = req.body.nhom;
+
+    const anh = req.file;
+    
+
+    if (anh) {
+      // `req.file` tồn tại
+      let link_anh = "/assets/media/product/"+anh.filename;
+      let data = { tu_khoa, the_loai,  ten, ma_san_pham, link_anh, thong_so, dac_diem, hang_san_xuat, gia_tien, so_luong, tuy_chon_san_pham, nhom, id };
+      // console.log(data);
+      await dataModel.updateBanPhim(data);
+    } else {
+      // `req.file` không tồn tại
+      let link_anh =anh_cu;
+      let data = { tu_khoa, the_loai,  ten, ma_san_pham, link_anh, thong_so, dac_diem, hang_san_xuat, gia_tien, so_luong, tuy_chon_san_pham, nhom, id};
+      // console.log(data);
+      await dataModel.updateBanPhim(data);
+    }
+
+    // let users_id = await dataModel.getIdUsersByEmail(email);
+    res.redirect('/sua-ban-phim?id='+id); 
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Lỗi trong quá trình thêm dữ liệu');
+  }
+});
+
+
+//xóa bàn phím
+router.get('/xoa-ban-phim', async (req, res) => {
+  try {
+    let id = req.query.id;
+    await dataModel.deleteBanPhim(id);
+    res.redirect('/quan-ly-ban-phim');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Lỗi trong quá trình lấy dữ liệu');
+  }
+});
+
+
+
+//route hiển thị trang bàn phím cơ
+router.get('/ban-phim-co', async (req, res) => {
+  let the_loai_current = "ban-phim-co";
+  // const data_banPhim = await dataModel.getDataBanPhim_theLoai(the_loai_current);
+  let count_ban_phim = await dataModel.getCountBanPhim(the_loai_current);
+  let table ="ban_phim";
+  let data_hang_sx = await dataModel.selectHangSX(table);
+
+  var brand = req.query.brand;
+  if(brand){
+    const data_banPhim = await dataModel.getDataBanPhim_theLoai_hangSX(the_loai_current, brand);
+    let hang_SX_current =brand;
+
+    if (req.session.loggedin) {
+      const data_user = await dataModel.getDataUsers(req.session.email, req.session.password);
+      const data_cart = await dataModel.showCart(req.session.email);
+      const count_cart = await dataModel.countCart(req.session.email);
+      const tong_gia_tien = await dataModel.sumCart(req.session.email);
+      
+      // console.log({data_LotChuot});
+      res.render('ban-phim', { data_user,the_loai_current, data_banPhim,data_cart, count_cart, tong_gia_tien, count_ban_phim, data_hang_sx, hang_SX_current});
+  
+  
+    } else {
+      //  console.log({chu_de_key_current});
+      res.render('ban-phim', {data_banPhim,the_loai_current, count_ban_phim, data_hang_sx, hang_SX_current});
+    }
+    res.end();
+  }
+  else{
+    const data_banPhim = await dataModel.getDataBanPhim_theLoai(the_loai_current);
+    let hang_SX_current ="";
+    if (req.session.loggedin) {
+      const data_user = await dataModel.getDataUsers(req.session.email, req.session.password);
+      const data_cart = await dataModel.showCart(req.session.email);
+      const count_cart = await dataModel.countCart(req.session.email);
+      const tong_gia_tien = await dataModel.sumCart(req.session.email);
+      
+      // console.log({data_LotChuot});
+      res.render('ban-phim', { data_user,the_loai_current, data_banPhim,data_cart, count_cart, tong_gia_tien, count_ban_phim, data_hang_sx, hang_SX_current});
+  
+  
+    } else {
+      //  console.log({chu_de_key_current});
+      res.render('ban-phim', {data_banPhim,the_loai_current, count_ban_phim, data_hang_sx, hang_SX_current});
+    }
+    res.end();
+  }
+
+});
+
+
+
 //route hiển thị trang bàn phím giả cơ
 router.get('/ban-phim-gia-co', async (req, res) => {
   let the_loai_current = "ban-phim-gia-co";
+  // const data_banPhim = await dataModel.getDataBanPhim_theLoai(the_loai_current);
   let count_ban_phim = await dataModel.getCountBanPhim(the_loai_current);
-  const data_banPhim = await dataModel.getDataBanPhim_theLoai(the_loai_current);
-  if (req.session.loggedin) {
-    const data_user = await dataModel.getDataUsers(req.session.email, req.session.password);
-    const data_cart = await dataModel.showCart(req.session.email);
-    const count_cart = await dataModel.countCart(req.session.email);
-    const tong_gia_tien = await dataModel.sumCart(req.session.email);
-    
-    // console.log({data_LotChuot});
-    res.render('ban-phim', { data_user,the_loai_current, data_banPhim,data_cart, count_cart, tong_gia_tien, count_ban_phim});
+  let table ="ban_phim";
+  let data_hang_sx = await dataModel.selectHangSX(table);
 
-
-  } else {
-    //  console.log({chu_de_key_current});
-    res.render('ban-phim', {data_banPhim,the_loai_current, count_ban_phim});
+  var brand = req.query.brand;
+  if(brand){
+    const data_banPhim = await dataModel.getDataBanPhim_theLoai_hangSX(the_loai_current, brand);
+    let hang_SX_current =brand;
+    if (req.session.loggedin) {
+      const data_user = await dataModel.getDataUsers(req.session.email, req.session.password);
+      const data_cart = await dataModel.showCart(req.session.email);
+      const count_cart = await dataModel.countCart(req.session.email);
+      const tong_gia_tien = await dataModel.sumCart(req.session.email);
+      
+      // console.log({data_LotChuot});
+      res.render('ban-phim', { data_user,the_loai_current, data_banPhim,data_cart, count_cart, tong_gia_tien, count_ban_phim, data_hang_sx, hang_SX_current});
+  
+  
+    } else {
+      //  console.log({chu_de_key_current});
+      res.render('ban-phim', {data_banPhim,the_loai_current, count_ban_phim, data_hang_sx, hang_SX_current});
+    }
+    res.end();
   }
-  res.end();
+  else{
+    const data_banPhim = await dataModel.getDataBanPhim_theLoai(the_loai_current);
+    let hang_SX_current ="";
+    if (req.session.loggedin) {
+      const data_user = await dataModel.getDataUsers(req.session.email, req.session.password);
+      const data_cart = await dataModel.showCart(req.session.email);
+      const count_cart = await dataModel.countCart(req.session.email);
+      const tong_gia_tien = await dataModel.sumCart(req.session.email);
+      
+      // console.log({data_LotChuot});
+      res.render('ban-phim', { data_user,the_loai_current, data_banPhim,data_cart, count_cart, tong_gia_tien, count_ban_phim, data_hang_sx, hang_SX_current});
+  
+  
+    } else {
+      //  console.log({chu_de_key_current});
+      res.render('ban-phim', {data_banPhim,the_loai_current, count_ban_phim, data_hang_sx, hang_SX_current});
+    }
+    res.end();
+  }
 });
 
 
@@ -738,22 +993,25 @@ router.get('/chi-tiet-ban-phim', async (req, res) => {
   var id = req.query.id;
   req.session.id = id;
   let data_select_one_ban_phim = await dataModel.selectOneBanPhimById(id);
+  let data_nhom = await dataModel.selectBanPhimByNhom(data_select_one_ban_phim[0].nhom);
+  // console.log(data_nhom);
   if (req.session.loggedin) {
     
     const data_user = await dataModel.getDataUsers(req.session.email, req.session.password);
     const data_cart = await dataModel.showCart(req.session.email);
     const count_cart = await dataModel.countCart(req.session.email);
     const tong_gia_tien = await dataModel.sumCart(req.session.email);
+    
     // console.log(data_cart);
     // console.log(count_cart);
     // console.log(tong_gia_tien);
-    res.render('chi-tiet-ban-phim', { data_user, data_select_one_ban_phim, data_cart, count_cart, tong_gia_tien });
+    res.render('chi-tiet-ban-phim', { data_user, data_select_one_ban_phim, data_cart, count_cart, tong_gia_tien, data_nhom });
 
 
   } else {
     // Not logged in
     // console.log({data_one_lot_chuot});
-    res.render('chi-tiet-ban-phim', { data_select_one_ban_phim });
+    res.render('chi-tiet-ban-phim', { data_select_one_ban_phim, data_nhom });
     // response.send('Please login to view this page!');
   }
   res.end();

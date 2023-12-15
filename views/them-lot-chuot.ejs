@@ -65,7 +65,7 @@
                         <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown"><i class="fa fa-th me-2"></i>Quản lý sản phẩm</a>
                         <div class="dropdown-menu bg-transparent border-0">
                             <a href="quan-ly-lot-chuot" class="dropdown-item active">Lót chuột</a>
-                            <a href="them-tai-khoan" class="dropdown-item">Bàn phím</a>
+                            <a href="quan-ly-ban-phim" class="dropdown-item">Bàn phím</a>
                         </div>
                     </div>
                     <a href="form.html" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Forms</a>
@@ -182,7 +182,7 @@
                 <div class="row g-4">
                     <a href="/quan-ly-lot-chuot"><button type="button" class="btn btn-light">Quay trở lại</button></a>
                     <h3 style="color: #29A07E">Thêm mới lót chuột</h3>
-                    <form action="them-lot-chuot" method="post">
+                    <form action="them-lot-chuot" method="post" enctype="multipart/form-data">
                         <div class="mb-3">
                             <label for="tu_khoa" class="form-label">Từ khóa: </label>
                             <input type="text" class="form-control" id="tu_khoa" placeholder="ví dụ: pad_sleep_bear" name="tu_khoa">
@@ -241,7 +241,7 @@
                         <div class="mb-3">
                             <div class="input-group">
                                 <span class="input-group-text">Thông số: </span>
-                                <textarea type="text" class="form-control" aria-label="With textarea" name="thong_so"></textarea>
+                                <textarea style="height: 250px;" type="text" class="form-control" aria-label="With textarea" name="thong_so"></textarea>
                             </div>
                         </div>
                        

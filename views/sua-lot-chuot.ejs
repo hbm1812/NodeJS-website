@@ -65,7 +65,7 @@
                         <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown"><i class="fa fa-th me-2"></i>Quản lý sản phẩm</a>
                         <div class="dropdown-menu bg-transparent border-0">
                             <a href="quan-ly-lot-chuot" class="dropdown-item active">Lót chuột</a>
-                            <a href="them-tai-khoan" class="dropdown-item">Bàn phím</a>
+                            <a href="quan-ly-ban-phim" class="dropdown-item">Bàn phím</a>
                         </div>
                     </div>
                     <a href="form.html" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Forms</a>
@@ -182,7 +182,7 @@
                 <div class="row g-4">
                     <a href="/quan-ly-lot-chuot"><button type="button" class="btn btn-light">Quay trở lại</button></a>
                     <h3 style="color: #29A07E">Sửa lót chuột</h3>
-                    <form action="sua-lot-chuot" method="post">
+                    <form action="sua-lot-chuot" method="post" enctype="multipart/form-data">
                         <div class="mb-3">
                             <label for="id" class="form-label">Id: </label>
                             <input type="text" class="form-control" id="id" readonly  name="id" value="<%= data_lotChuot[0].id %>">
@@ -266,13 +266,13 @@
                         <div class="mb-3">
                             <label for="kich_thuoc" class="form-label">Kích thước: </label>
                             <select class="form-select" aria-label="Default select example" id="kich_thuoc" name="kich_thuoc">
-                                <option selected>Nhấp để mở lựa chọn</option>
+                                <!-- <option selected>Nhấp để mở lựa chọn</option>
                                 <option value="26x21cm">26x21CM</option>
                                 <option value="35x30cm">35x30CM</option>
                                 <option value="45x40cm">45x40CM</option>
                                 <option value="80x30cm">80x30CM</option>
                                 <option value="90x35cm">90x35CM</option>
-                                <option value="90x40cm">90x40CM</option>
+                                <option value="90x40cm">90x40CM</option> -->
 
 
                                     <% if(data_lotChuot[0].kich_thuoc == "" ){ %>
@@ -288,7 +288,7 @@
                                     <% } %>
 
                                     <% if(data_lotChuot[0].kich_thuoc== "35x30cm" ){ %>
-                                        <option value="35x30cm" selected> DỄ THƯƠNG </option> 
+                                        <option value="35x30cm" selected> 35x30CM</option> 
                                     <% }else{ %>
                                         <option value="35x30cm" > 35x30cm </option> 
                                     <% } %> 
@@ -332,14 +332,20 @@
                             <input type="text" class="form-control" id="anh" name="anh">
                         </div> -->
                         <div class="mb-3">
-                            <label for="anh" class="form-label">Chọn ảnh</label>
+                            <label for="anh" class="form-label">Ảnh hiện tại</label>
+                            <input type="text" class="form-control" id="anh_cu"  name="anh_cu" value="<%= data_lotChuot[0].anh %>" readonly>
+                            <br>
+                            <img src="<%= data_lotChuot[0].anh %>" style="width: 300px;" alt="" srcset="">
+                            <br>
+                            <br>
+                            <label for="anh" class="form-label">Hoặc chọn ảnh mới</label>
                             <input type="file" class="form-control" id="anh"  name="anh">
                         </div>
 
                         <div class="mb-3">
                             <div class="input-group">
                                 <span class="input-group-text">Thông số: </span>
-                                <textarea type="text" class="form-control" aria-label="With textarea" name="thong_so" ><%= data_lotChuot[0].thong_so %></textarea>
+                                <textarea style="height: 250px;" type="text" class="form-control" aria-label="With textarea" name="thong_so" ><%= data_lotChuot[0].thong_so %></textarea>
                             </div>
                         </div>
                        

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Lacdaustore - Quản lý</title>
+    <title>Lacdaustore - Quản lý bàn phím</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -55,17 +55,17 @@
                 <div class="navbar-nav w-100">
                     <a href="quan-ly" class="nav-item nav-link "><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Quản lý tài khoản</a>
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Quản lý tài khoản</a>
                         <div class="dropdown-menu bg-transparent border-0">
                             <a href="quan-ly-tai-khoan" class="dropdown-item">Xem danh sách</a>
-                            <a href="them-tai-khoan" class="dropdown-item active">Thêm tài khoản</a>
+                            <a href="them-tai-khoan" class="dropdown-item">Thêm tài khoản</a>
                         </div>
                     </div>
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle " data-bs-toggle="dropdown"><i class="fa fa-th me-2"></i>Quản lý sản phẩm</a>
+                        <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown"><i class="fa fa-th me-2"></i>Quản lý sản phẩm</a>
                         <div class="dropdown-menu bg-transparent border-0">
                             <a href="quan-ly-lot-chuot" class="dropdown-item ">Lót chuột</a>
-                            <a href="quan-ly-ban-phim" class="dropdown-item">Bàn phím</a>
+                            <a href="quan-ly-ban-phim" class="dropdown-item active">Bàn phím</a>
                         </div>
                     </div>
                     <a href="form.html" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Forms</a>
@@ -180,40 +180,60 @@
 
             <div class="container-fluid pt-4 px-4">
                 <div class="row g-4">
-                    <h3>Thêm mới tài khoản</h3>
-                    <form action="them-tai-khoan" method="post">
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email address</label>
-                            <input type="email" class="form-control" id="email" placeholder="name@example.com" name="email">
-                          </div>
-                          <div class="mb-3">
-                            <label for="username" class="form-label">Tên người dùng</label>
-                            <input type="text" class="form-control" id="username" placeholder="username" name="username">
-                          </div>
-    
-                          <div class="mb-3">
-                            <label for="authority_id" class="form-label">Chọn quyền truy cập</label>
-                            <select class="form-select" aria-label="Default select example" id="authority_id" name="authority_id">
-                                <option selected>Nhấp để mở lựa chọn</option>
-                                <option value="1">Admin</option>
-                                <option value="2">Khách hàng</option>
-                              </select>
-                          </div>
-                          <div class="mb-3">
-                            <label for="password" class="form-label">Nhập mật khẩu</label>
-                            <input type="password" class="form-control" id="password" placeholder="password" name="password">
-                          </div>
-                          <div class="mb-3">
-                            <label for="repassword" class="form-label">Nhập lại mật khẩu</label>
-                            <input type="password" class="form-control" id="repassword" placeholder="password" name="repassword">
-                          </div>
-    
-    
-                          <button type="submit" class="btn btn-success">Tạo tài khoản</button>
-                    </form>
-                    
-                     
-                      
+                        <h1 style="color: #29A07E">BÀN PHÍM</h1>                
+                        <h4><span ><span ><%= count[0].so_luong %></span> sản phẩm</span> </h4>
+                        <a href="/them-ban-phim"><button type="button" class="btn btn-success">Thêm mới sản phẩm</button></a>
+                    <table class="table">
+                        <thead>
+                          <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">MÃ SẢN PHẨM</th>
+                            <th scope="col">THỂ LOẠI</th>
+                            <th scope="col">TÊN</th>
+                            <th scope="col">SỐ LƯỢNG</th>
+                            <th scope="col">ẢNH</th>
+                            <th scope="col">HÃNG SX</th>
+                            <!-- <th scope="col">TÙY CHỌN SẢN PHẨM</th> -->
+                            <th scope="col">GIÁ TIỀN</th>
+                            <th scope="col">Hành động</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            <% data_banPhim.forEach(item=> { %>
+                          <tr>
+                            <th scope="row"><%= item.id%></th>
+                            <td><%= item.ma_san_pham%></td>
+                            <td><%= item.the_loai%></td>
+                            <td><%= item.ten%></td>
+                            <td><%= item.so_luong%></td>
+                            <td><img src="<%= item.anh%>" style="width:100px;" alt=""></td>
+                            <td><%= item.hang_san_xuat%></td>
+                            <!-- <td><%= item.tuy_chon_san_pham%></td> -->
+                            <td><%= item.gia_tien%>.000đ</td>
+                            <td><a href="/sua-ban-phim?id=<%= item.id%>"><button type="button" class="btn btn-warning">Sửa</button></a>
+                                <a href="javascript:void(0)"><button type="button" class="btn btn-danger" onclick="Xoa_1_san_pham('<%= item.ten%>','<%= item.id%>')">Xóa</button></a>
+                            </td>
+                           
+                            
+                          </tr>
+                          <% }); %>
+
+                          <script type="text/javascript">
+
+                            function Xoa_1_san_pham(ten,id)  {
+                   
+                                 var result = confirm("Bạn chắc chắn muốn xóa sản phẩm: "+ ten +"?");
+                   
+                                 if(result)  {
+                                    location.href = "/xoa-ban-phim?id="+id;
+                                    //  alert("OK Next lesson!");
+                                 } else {
+                                     
+                                 }
+                            }
+                         </script>
+                        </tbody>
+                      </table>
 
                 </div>
             </div>
@@ -227,7 +247,7 @@
 
 
         <!-- Back to Top -->
-        <!-- <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a> -->
+        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
     </div>
 
     <!-- JavaScript Libraries -->

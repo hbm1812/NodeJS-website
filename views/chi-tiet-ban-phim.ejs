@@ -298,10 +298,21 @@
 
                         <li itemprop="itemListElement" itemscope
                             itemtype="http://schema.org/ListItem">
-                            <a href="/lot-chuot"
+                            
+
+                            <%if( data_select_one_ban_phim[0].the_loai =='ban-phim-co' ){ %> 
+                                <a href="/ban-phim-co"
                                 itemprop="item" class="nopad-l">
-                                <span itemprop="name"> Lót chuột </span>
+                                <span itemprop="name"> Bàn phím cơ </span>
                             </a>
+
+                            <% }else{%> 
+                                <a href="/ban-phim-gia-co"
+                                itemprop="item" class="nopad-l">
+                                <span itemprop="name"> Bàn phím giả cơ </span>
+                            </a>
+                            <% } %>
+
                             <meta itemprop="position" content="2">
                         </li>
 
@@ -361,96 +372,31 @@
             
                             <div class="pd-variant-group-holder" id="js-variant-group-holder">
                                 
-                                <% if(data_select_one_ban_phim[0].tuy_chon_san_pham == "104 PHÍM XANH" ){ %>
-                                <a href="/pad-44-sleep-bear" class="item current">
-                                    <span class="name">104 PHÍM XANH</span>
-                                    <span class="price">
-                                        Liên hệ
-                                        
-                                    </span>
-                                </a> 
-                                <% } else{ %>
-                                <a href="/pad-44-sleep-bear" class="item ">
-                                    <span class="name">104 PHÍM XANH</span>
-                                    <span class="price">
-                                        Liên hệ
-                                        
-                                    </span>
-                                </a> 
-                                <% } %>
+                                <% data_nhom.forEach(item=> { %>  
+                                    <%if( item.tuy_chon_san_pham == data_select_one_ban_phim[0].tuy_chon_san_pham){ %> 
+                                        <a href="javascript:void(0)" class="item current" style="font-weight: bold;">
+                                            <span class="name"><%= item.tuy_chon_san_pham %></span>
+                                            <span class="price">
+                                                <%= item.gia_tien %>.000<u>đ</u>
+                                                
+                                            </span>
+                                        </a> 
+                                    <% }else{%> 
+                                        <a href="chi-tiet-ban-phim?id=<%= item.id %>" class="item " style="font-weight: bold;">
+                                            <span class="name"><%= item.tuy_chon_san_pham %></span>
+                                            <span class="price">
+                                                <%= item.gia_tien %>.000<u>đ</u>
+                                                
+                                            </span>
+                                        </a> 
+                                    <% } %>
+                                <% }); %>  
                                 
 
-                                <% if(data_select_one_ban_phim[0].tuy_chon_san_pham == "87 PHÍM XANH" ){ %>
-                                    <a href="/pad-44-sleep-bear" class="item current">
-                                        <span class="name">87 PHÍM XANH</span>
-                                        <span class="price">
-                                            430.000<u>đ</u>
-                                            
-                                        </span>
-                                    </a> 
-                                <% } else{ %>
-                                    <a href="/pad-44-sleep-bear" class="item ">
-                                        <span class="name">104 PHÍM XANH</span>
-                                        <span class="price">
-                                            430.000<u>đ</u>
-                                            
-                                        </span>
-                                    </a> 
-                                <% } %>
+                                
 
 
-                                <% if(data_select_one_ban_phim[0].tuy_chon_san_pham == "87 PHÍM HỒNG" ){ %>
-                                        <a href="/pad-44-sleep-bear" class="item current">
-                                            <span class="name">87 PHÍM HỒNG</span>
-                                            <span class="price">
-                                                430.000<u>đ</u>
-                                                
-                                            </span>
-                                        </a> 
-                                <% } else{ %>
-                                        <a href="/pad-44-sleep-bear" class="item ">
-                                            <span class="name">104 PHÍM HỒNG</span>
-                                            <span class="price">
-                                                430.000<u>đ</u>
-                                                
-                                            </span>
-                                        </a> 
-                                <% } %>
-                                        
-                                <% if(data_select_one_ban_phim[0].tuy_chon_san_pham == "87 PHÍM TRẮNG" ){ %>
-                                            <a href="/pad-44-sleep-bear" class="item current">
-                                                <span class="name">87 PHÍM TRẮNG</span>
-                                                <span class="price">
-                                                    430.000<u>đ</u>
-                                                    
-                                                </span>
-                                            </a> 
-                                <% } else{ %>
-                                            <a href="/pad-44-sleep-bear" class="item ">
-                                                <span class="name">87 PHÍM TRẮNG</span>
-                                                <span class="price">
-                                                    430.000<u>đ</u>
-                                                    
-                                                </span>
-                                            </a> 
-                                <% } %> 
-                                <% if(data_select_one_ban_phim[0].tuy_chon_san_pham == "87 PHÍM ĐEN" ){ %>
-                                    <a href="/pad-44-sleep-bear" class="item current">
-                                        <span class="name">87 PHÍM ĐEN</span>
-                                        <span class="price">
-                                            430.000<u>đ</u>
-                                            
-                                        </span>
-                                    </a> 
-                                <% } else{ %>
-                                    <a href="/pad-44-sleep-bear" class="item ">
-                                        <span class="name">87 PHÍM ĐEN</span>
-                                        <span class="price">
-                                            430.000<u>đ</u>
-                                            
-                                        </span>
-                                    </a> 
-                                <% } %> 
+                                 
                             </div> 
                         </div>
 
