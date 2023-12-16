@@ -19,6 +19,12 @@ const validationRules_users = [
 ];
 
 
+const crypto = require("crypto");
+
+const jwt = require("jsonwebtoken");
+
+
+
 // Route để hiển thị dữ liệu
 router.get('/', async (req, res) => {
   try {
@@ -64,6 +70,7 @@ router.post('/dang-nhap', (req, res) => {
         req.session.loggedin = true;
         req.session.email = email;
         req.session.password = password;
+        const token = jwt.sign({ email: email, password: password }, password, { expiresIn: 3600 });
 
         if (results[0].authority_id == 2) {
           // Redirect to home page
@@ -135,8 +142,9 @@ router.get('/tai-khoan', async (req, res) => {
     const data_cart = await dataModel.showCart(req.session.email);
     const count_cart = await dataModel.countCart(req.session.email);
     const tong_gia_tien = await dataModel.sumCart(req.session.email);
+    let data_bill = await dataModel.getBill(req.session.email);
     // console.log({data_user, data_information});
-    res.render('tai-khoan', { data_user, data_information,data_cart,count_cart,tong_gia_tien });
+    res.render('tai-khoan', { data_user, data_information,data_cart,count_cart,tong_gia_tien, data_bill });
 
 
   } else {
@@ -152,10 +160,10 @@ router.post('/dang-ky', validationRules_users, async (req, res) => {
   try {
     const errors = validationResult(req);
 
-    if (!errors.isEmpty()) {
-      // return res.status(withMessage).json({ errors: errors.array() });
-      return res.send(errors);
-    }
+    // if (!errors.isEmpty()) {
+    //   // return res.status(withMessage).json({ errors: errors.array() });
+    //   return res.send(errors);
+    // }
     let username = req.body.username;
     let email = req.body.email;
     let password = req.body.password;
@@ -217,8 +225,14 @@ router.get('/quan-ly', async (req, res) => {
 
   if (req.session.loggedin) {
     const data_user = await dataModel.getDataUsers(req.session.email, req.session.password);
+    let data_bill = await dataModel.getAllBill("Chờ xác nhận");
+    let data_bill_dang_giao = await dataModel.getAllBill("Đang giao hàng");
+    
+    let count_bill_chua_xac_nhan = await dataModel.count_bill_chua_xac_nhan();
+    let count_bill_dang_giao= await dataModel.count_bill_dang_giao();
+    let count_bill_da_thanh_toan= await dataModel.count_bill_da_thanh_toan();
     // console.log({data_user});
-    res.render('quan-ly', { data_user });
+    res.render('quan-ly', { data_user,data_bill, count_bill_chua_xac_nhan, count_bill_dang_giao, data_bill_dang_giao, count_bill_da_thanh_toan });
 
 
   } else {
@@ -1326,5 +1340,156 @@ router.get('/delete-all-cart', async (req, res) => {
     res.status(500).send('Lỗi trong quá trình lấy dữ liệu');
   }
 });
+
+
+
+
+//thanh toán
+router.post('/thanh-toan', async (req, res) => {
+  
+  try {
+    const randomBytesNumber = crypto.randomBytes(20);
+    const randomStringNumber = randomBytesNumber.toString("ascii").replace(/[^0-9]/g, "");
+  // const randomStringNumber = crypto.randomBytes(Math.floor(Math.random() * 100)).toString("ascii");
+
+  const randomBytesText = crypto.randomBytes(20);
+  const randomStringText = randomBytesText.toString("ascii").replace(/[^A-Za-z]/g, "");
+
+  // const randomStringText = crypto.randomBytes(10).toString("ascii").replace(/[^A-Za-z]/g, "");
+  const ma_hoa_don = randomStringNumber+randomStringText;
+// console.log(ma_hoa_don)
+
+      let tong_tien = req.body.tong_tien;
+      let ghi_chu = req.body.ghi_chu;
+      let tinh =req.body.tinh;
+      let dia_chi =req.body.dia_chi;
+      let pay_method = req.body.pay_method;
+      let ten = req.body.ten;
+      let email = req.body.email;
+      let phone = req.body.phone;
+      let trang_thai="Chờ xác nhận";
+     
+
+    for(var i=0; i< req.body.ma_san_pham.length; i++){
+      let ma_san_pham= req.body.ma_san_pham[i];
+      let so_luong = req.body.amount[i];
+      let ten_san_pham =req.body.ten_san_pham[i];
+      let so_tien = req.body.so_tien[i];
+      let anh = req.body.anh[i];
+
+      let data_chi_tiet_hoa_don = { ma_san_pham, so_luong, ma_hoa_don, ten_san_pham, anh , so_tien };
+      // console.log(data);
+      await dataModel.createChiTietHoaDon(data_chi_tiet_hoa_don); 
+    }
+
+    let data_hoa_don = { tong_tien, ten, email, phone, ghi_chu, tinh, dia_chi, pay_method, ma_hoa_don, trang_thai };
+    await dataModel.createHoaDon(data_hoa_don); 
+    await dataModel.deleteAllCart(email);
+
+    res.redirect('/cart'); 
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Lỗi trong quá trình thêm dữ liệu');
+  }
+  
+});
+
+
+
+// Route để hiển thị trang chi tiết hóa đơn
+router.get('/chi-tiet-don-hang', async (req, res) => {
+  if (req.session.loggedin) {
+    const data_user = await dataModel.getDataUsers(req.session.email, req.session.password);
+    let data_information = await dataModel.getInformation(req.session.email);
+    const data_cart = await dataModel.showCart(req.session.email);
+    const count_cart = await dataModel.countCart(req.session.email);
+    const tong_gia_tien = await dataModel.sumCart(req.session.email);
+    
+    var ma_hoa_don = req.query.ma_hoa_don;
+    let data_bill = await dataModel.getBillByMa_hoa_don(ma_hoa_don);
+    let data_detail_bill = await dataModel.getDetailBill(ma_hoa_don);
+    // console.log(data_detail_bill);
+    res.render('chi-tiet-don-hang', { data_user, data_information, data_cart,count_cart,tong_gia_tien, data_bill, data_detail_bill });
+
+
+  } else {
+    // Not logged in
+    // response.send('Please login to view this page!');
+    res.render('trang-chu');
+  }
+  res.end();
+});
+
+// Route để hiển thị trang quản lý chi tiết đơn hàng
+router.get('/quan-ly-chi-tiet-don-hang', async (req, res) => {
+
+  if (req.session.loggedin) {
+    const data_user = await dataModel.getDataUsers(req.session.email, req.session.password);
+    let ma_hoa_don = req.query.ma_hoa_don;
+    let data_bill = await dataModel.getBillByMa_hoa_don(ma_hoa_don);
+    let data_detail_bill = await dataModel.getDetailBillByMa_hoa_don(ma_hoa_don);
+
+    // console.log({data_user});
+    res.render('quan-ly-chi-tiet-don-hang', { data_user,data_bill, data_detail_bill });
+
+
+  } else {
+    // Not logged in
+    // response.send('Please login to view this page!');
+    res.render('trang-chu');
+  }
+  res.end();
+});
+
+
+
+// xác nhận đơn hàng
+router.get('/xac-nhan-don-hang', async (req, res) => {
+
+  if (req.session.loggedin) {
+   
+    let ma_hoa_don = req.query.ma_hoa_don;
+    await dataModel.xacNhanDonHang(ma_hoa_don);
+    const data_user = await dataModel.getDataUsers(req.session.email, req.session.password);
+    let data_bill = await dataModel.getAllBill();
+    // console.log({data_user});
+    res.render('quan-ly', { data_user,data_bill });
+
+
+
+  } else {
+    // Not logged in
+    // response.send('Please login to view this page!');
+    res.render('trang-chu');
+  }
+  res.end();
+});
+
+// Route xác nhận thanh toán
+router.get('/xac_nhan_thanh_toan', async (req, res) => {
+  if (req.session.loggedin) {
+    const data_user = await dataModel.getDataUsers(req.session.email, req.session.password);
+    let data_information = await dataModel.getInformation(req.session.email);
+    const data_cart = await dataModel.showCart(req.session.email);
+    const count_cart = await dataModel.countCart(req.session.email);
+    const tong_gia_tien = await dataModel.sumCart(req.session.email);
+    
+    var ma_hoa_don = req.query.ma_hoa_don;
+    await dataModel.xacNhanThanhToan(ma_hoa_don);
+    let data_bill = await dataModel.getBillByMa_hoa_don(ma_hoa_don);
+    let data_detail_bill = await dataModel.getDetailBill(ma_hoa_don);
+    // console.log(data_detail_bill);
+    res.render('chi-tiet-don-hang', { data_user, data_information, data_cart,count_cart,tong_gia_tien, data_bill, data_detail_bill });
+
+
+  } else {
+    // Not logged in
+    // response.send('Please login to view this page!');
+    res.render('trang-chu');
+  }
+  res.end();
+});
+
+
 
 module.exports = router;

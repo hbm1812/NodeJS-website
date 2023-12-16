@@ -701,7 +701,173 @@ function selectBanPhimByNhom(nhom) {
 }
 
 
+ // Phương thức để thêm dữ liệu vào cơ sở dữ liệu
+ function createHoaDon(data) {
+  return new Promise((resolve, reject) => {
+    const query = 'INSERT INTO hoa_don (ma_hoa_don, tong_tien, ten, email, phone, ghi_chu, tinh, dia_chi, pay_method, time, trang_thai) VALUES ( ?, ?, ?,?, ?, ?, ?, ?,?,CURRENT_TIMESTAMP(), ?)'; 
+    connection.query(query, [data.ma_hoa_don, data.tong_tien, data.ten, data.email, data.phone, data.ghi_chu, data.tinh, data.dia_chi, data.pay_method, data.trang_thai], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(results);
+    });
+  });
+}
+// Phương thức để thêm dữ liệu vào cơ sở dữ liệu
+function createChiTietHoaDon(data) {
+  return new Promise((resolve, reject) => {
+    const query = 'INSERT INTO chi_tiet_hoa_don (ma_hoa_don, ma_san_pham, so_luong, ten, anh, so_tien) VALUES (?, ?, ?, ?, ?, ?)'; 
+    connection.query(query, [data.ma_hoa_don, data.ma_san_pham, data.so_luong, data.ten_san_pham, data.anh, data.so_tien], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(results);
+    });
+  });
+}
 
 
 
-module.exports = {connection, getData, addData, getDataUsers, createAccount, createEmailInformation, getInformation, updateInformation, updateUsernameUsers, changePassword, createNewAccount, selectOneAccountById, updateUsers, updateEmailInformation, getIdIdformation, deleteUsers, deleteInformation, getDataLotChuot, getDataLotChuot_chuDe, selectOneLot_chuotById, selectOneLot_chuotByMaSanPham,addToCart,showCart,countCart,sumCart,findProductCart, getCountLotChuot, createNewLotChuot, getDataBanPhim_theLoai, selectOneBanPhimById, selectOneBanPhimByMaSanPham, getCountBanPhim, getDataChuot_theLoai, getCountChuot, selectOneChuotById, selectOneChuotByMaSanPham, deleteOneProductInCart, deleteAllCart, updateLotChuot,deleteLotChuot, getDataBanPhim, getCountBanPhimAll, createNewBanPhim, selectHangSX, selectTheLoai, updateBanPhim, deleteBanPhim, getDataBanPhim_theLoai_hangSX, selectBanPhimByNhom};
+function getBill(email) {
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT * FROM hoa_don WHERE email=?'; 
+    connection.query(query, [email], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      // console.log(results);
+      resolve(results);
+    });
+  });
+}
+
+function getDetailBill(ma_hoa_don) {
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT * FROM chi_tiet_hoa_don WHERE ma_hoa_don=?';
+    connection.query(query, [ma_hoa_don], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      // console.log(results);
+      resolve(results);
+    });
+  });
+}
+
+
+function getAllBill(trang_thai) {
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT * FROM hoa_don WHERE trang_thai=? ORDER BY time ASC'; 
+    connection.query(query,[trang_thai] , (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(results);
+    });
+  });
+}
+
+
+
+function getBillByMa_hoa_don(ma_hoa_don) {
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT * FROM hoa_don WHERE ma_hoa_don=?;'
+    connection.query(query, [ma_hoa_don], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      // console.log(results);
+      resolve(results);
+    });
+  });
+}
+
+function getDetailBillByMa_hoa_don(ma_hoa_don) {
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT * FROM chi_tiet_hoa_don WHERE ma_hoa_don=?;'
+    connection.query(query, [ma_hoa_don], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      // console.log(results);
+      resolve(results);
+    });
+  });
+}
+
+
+function xacNhanDonHang(ma_hoa_don) {
+  return new Promise((resolve, reject) => {
+    const query = 'UPDATE hoa_don SET trang_thai="Đang giao hàng" WHERE ma_hoa_don=?;'
+    connection.query(query, [ma_hoa_don], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(results);
+    });
+  });
+}
+
+
+function count_bill_chua_xac_nhan() {
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT count(*) as number from hoa_don  WHERE trang_thai="Chờ xác nhận"'; 
+    connection.query(query, (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(results);
+    });
+  });
+}
+
+function count_bill_dang_giao() {
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT count(*) as number from hoa_don  WHERE trang_thai="Đang giao hàng"'; 
+    connection.query(query, (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(results);
+    });
+  });
+}
+
+function count_bill_da_thanh_toan() {
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT count(*) as number from hoa_don  WHERE trang_thai="Đã thanh toán"'; 
+    connection.query(query, (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(results);
+    });
+  });
+}
+
+
+function xacNhanThanhToan(ma_hoa_don) {
+  return new Promise((resolve, reject) => {
+    const query = 'UPDATE hoa_don SET trang_thai="Đã thanh toán" WHERE ma_hoa_don=?;'
+    connection.query(query, [ma_hoa_don], (error, results) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(results);
+    });
+  });
+}
+
+module.exports = {connection, getData, addData, getDataUsers, createAccount, createEmailInformation, getInformation, updateInformation, updateUsernameUsers, changePassword, createNewAccount, selectOneAccountById, updateUsers, updateEmailInformation, getIdIdformation, deleteUsers, deleteInformation, getDataLotChuot, getDataLotChuot_chuDe, selectOneLot_chuotById, selectOneLot_chuotByMaSanPham,addToCart,showCart,countCart,sumCart,findProductCart, getCountLotChuot, createNewLotChuot, getDataBanPhim_theLoai, selectOneBanPhimById, selectOneBanPhimByMaSanPham, getCountBanPhim, getDataChuot_theLoai, getCountChuot, selectOneChuotById, selectOneChuotByMaSanPham, deleteOneProductInCart, deleteAllCart, updateLotChuot,deleteLotChuot, getDataBanPhim, getCountBanPhimAll, createNewBanPhim, selectHangSX, selectTheLoai, updateBanPhim, deleteBanPhim, getDataBanPhim_theLoai_hangSX, selectBanPhimByNhom, createHoaDon, createChiTietHoaDon, getBill, getDetailBill, getAllBill, getBillByMa_hoa_don, getDetailBillByMa_hoa_don, xacNhanDonHang, count_bill_chua_xac_nhan, count_bill_dang_giao, count_bill_da_thanh_toan, xacNhanThanhToan };

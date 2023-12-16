@@ -348,281 +348,182 @@
 
             </div>
             <div class="bg-white">
-                <div class="container">
-                    <div class="account-index row">
-                        <div class="account-left col-md-3">
-                            <div>
-                                <b class="d-block">Đơn hàng đặt mua</b>
-                                <b  class=" btn btn-left btn-secondary" id="btn-status-cart" style="cursor: pointer ;" onclick="statusCart_mouse_click()" >Danh sách đơn hàng</b>
-                            </div>
-                            <div class="line"></div>
-                            <div>
-                                <b class="d-block">Thông tin tài khoản</b>
-                                <b  class=" btn btn-left btn-secondary"id="btn-info"  style="cursor: pointer ;" onclick="infoAccount_mouse_click()">Thông tin cá nhân</b>
-                                <b  class=" btn btn-left btn-secondary" id="btn-change-password" style="cursor: pointer ;" onclick="changePassword_mouse_click()"">Thay đổi mật khẩu</b>
-                            </div>
-                            <div><a href="/dang-xuat" class="btn text-white d-inline-block" style="background: #f23c3cde" >Log-out</a></div>
-                        </div>
-                        <div class="account-right col-md-9">
-                            <div class="top-alert" id="top-alert">Bạn đang ở trang tài khoản. Vui lòng chọn các mục bên trái để xem thông tin.</div>
-                            
-                            <div class="status-cart" id="status-cart">
-                                <div>
-                                    <% if(data_bill == ""){ %>
-                                        <p class="font-600 text-22" >Bạn chưa mua đơn hàng nào</p>
-                                    <% }else{ %>
-                                        <% data_bill.forEach(item=> { %>
-                                            <table border="1" style="text-align: center;">
-                                                <tr>
-                                                    <th>MÃ ĐƠN HÀNG</th>
-                                                    <th>NGÀY MUA</th>
-                                                    <th>TỔNG TIỀN</th>
-                                                    <th>TRẠNG THÁI</th>
-                                                    <th>HÀNH ĐỘNG</th>
-                                                </tr>
-                                                <tr>
-                                                    <td><%=item.ma_hoa_don%></td>
-                                                    <td><%=item.time%></td>
-                                                    <td><%=item.tong_tien%>.000 <u>đ</u></td>
-                                                    <td><%=item.trang_thai%></td>
-                                                    <td><a href="chi-tiet-don-hang?ma_hoa_don=<%=item.ma_hoa_don%>"><b class=" btn btn-left btn-secondary"id="btn-info"  style="cursor: pointer; background-color: #29A07E;">Xem chi tiết</b></a></td>
-                                                </tr>
-                                            </table>
-                                            <br>
-                                        <% }); %>
+                
+                    
+                        <div class="cart-page container">
+                           
+                                <div class="cart-items-container">
+                                    <br>
+                                    <a href="tai-khoan"><b class=" btn btn-left btn-secondary"id="btn-info"  style="cursor: pointer; background-color: #29A07E; padding: 5px; color: white;">Quay trở lại</b></a>
+                                    
+                                    <div class="cart-item-header">
+                                        <h1 style="color: #29A07E">CHI TIẾT ĐƠN HÀNG: </h1>                
+                                        <h3><span ><span style="color: #29A07E">Mã đơn hàng: </span> <%=data_bill[0].ma_hoa_don %> </span> </h3>
+                                        <h3><span style="color: hsl(19, 96%, 48%)">(<%=data_bill[0].trang_thai %>)</span></h3>
+        
+                                        <div class="col-header cart-col-row text-15 font-300">
+                                            <div class="cart-col-1"> Sản phẩm </div>
+                                            <div class="cart-col-2"> Đơn giá </div>
+                                            <div class="cart-col-3"> Số lượng </div>
+                                            <div class="cart-col-4"> Số tiền </div>
+                                        </div>
+                                    </div>
+                                    <% data_detail_bill.forEach(item=> { %>
+                                    <div class="cart-item-body">
+                                        <div class="item-cart cart-col-row js-item-row" data-variant_id="0" data-item_id="750" data-item_type="product">
+                                            <div class="cart-col-1">
+                                                <a href="/pad-33-sleep-bear" class="img">
+                                                    <img src="<%= item.anh%>">                  
+                                                </a>
+                        
+                                                <div class="text">
+                                                    <a href="/pad-33-sleep-bear" class="d-inline-block font-700"> <%= item.ten%> </a>                    
+                                                    <span class="d-block p-info"> Mã sản phẩm: <%= item.ma_san_pham %> </span>
+                                                    <input type="text" name="ma_san_pham" value="<%= item.ma_san_pham %>" style="display: none;">
+                
+                                                </div>
+                                            </div>
+                        
+                                            <div class="cart-col-2">
+                                                <input type="hidden" class="js-buy-price" data-price="60000"> 
+                                                <%=item.so_tien%>.000đ
+                                            </div>
+                        
+                                            <div class="cart-col-3 clearfix">
+                                             
+            
+                                                
+                                                <input type="text" name="amount" id="<%= item.id%>" class="quantity-buy js-buy-quantity js-quantity-change" value="1" data-stock="998"readonly>
+                                                
+                                          
+                                            </div>
                                             
-                                    <% } %>
-
+                        
+                                            <div class="cart-col-4 font-600 red">
+                                                <span class="js-total-item-price" id="price_<%= item.id%>" >
+                                                    <%=item.so_tien%>                               
+                                                </span>.000đ
+                                            </div>
+                        
+                                           
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                    
+                                    <% }); %>
+            
+            
+                                    
                                 </div>
                                 
+            
+            
+                                <div class="cart-customer-container clearfix d-block">
+                                    <div class="customer-left">
+                                        <p class="title font-600 text-15"> ĐỊA CHỈ NHẬN HÀNG </p>
+                                        <div class="d-flex flex-wrap">
+                                            <div class="form-info-group">
+                                                <input type="text" placeholder="Họ và tên" name="ten" id="buyer_name" value="<%= data_bill[0].ten %>" readonly>
+                        
+                                                <input type="text" placeholder="Email" name="email" id="buyer_email" value="<%= data_bill[0].email %>" readonly>
+                        
+                                                <input type="text" placeholder="Số điện thoại" name="phone" id="buyer_tel" value="<%= data_bill[0].phone %>" readonly>
+                        
+                                                <input type="text" placeholder="Tỉnh" name="tinh" id="buyer_tel" value="<%= data_bill[0].tinh %>"readonly >
+                                              
+                        
+                                                <input type="text" placeholder="Toà nhà, Tên đường..." id="buyer_address" name="dia_chi" value="<%= data_bill[0].dia_chi %>" readonly>
+                                            </div>
+            
+                                            <div class="form-info-group clearfix">
+                                                
+                                                <textarea name="ghi_chu" id="" cols="30" rows="10" readonly value=""><%=data_bill[0].ghi_chu %></textarea>
+                                                <div class="cart-btn-group clearfix">
+                                                    <a href="javascript:void(0)" onclick="downloadCartImage()"><i class="far fa-image" aria-hidden="true"></i> TẢI ẢNH ĐƠN HÀNG</a>
+                                                    <a href="/export_file.php?file_type=xls&amp;content_type=shopping-cart" target="_blank" rel="nofollow"><i class="far fa-file-excel" aria-hidden="true"></i> TẢI FILE EXCEL</a>
+                                                    <a href="/print/user.php?view=cart" target="_blank" rel="nofollow"><i class="fas fa-print" aria-hidden="true"></i> IN BÁO GIÁ</a>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="customer-right">
+                                        <p class="title  font-600 text-15"> HÌNH THỨC THANH TOÁN </p>
+                                        <div class="payment" style="margin-bottom: 60px;">
                                 
+                                
+                                
+                                            <label class="label-container">
+                                                <input type="radio" id="pay_method_1" name="pay_method" value="Thanh toán khi nhận hàng" checked="">
+                                                <span class="checkmark"></span>
+                                                <span>Thanh toán tiền mặt khi nhận hàng</span>
+                        
+                                                <div class="payment-detail" style="display: none;"></div>
+                                            </label>
+                                            
+                                            
+                                            
+                                            
+                                        </div>
+            
+                                        <div class="text-right text-13 cart-total-price-group" style="font-weight: bold;">
+                                            <% if(typeof count_cart != "undefined" ){ %>
+                                            Tổng tiền hàng:
+                                            <% }else{ %>
+                                            Tổng tiền hàng (<span class="red" id="js-total-quantity">0 sản phẩm</span>):
+                                            <% } %>
+                                            <b class="red text-22 font-600">
+                                                <% if(typeof tong_gia_tien != "undefined" ){ %>
+                                                    <span class="js-total-cart-price" id="tong_tien"><%= data_bill[0].tong_tien %></span>.000đ
+                                                    <input type="text" name="tong_tien" id="input_tong_tien" value="<%= tong_gia_tien[0].gia_tien %>" class="form-input" style="display: none;" >
+                                                <% }else{ %>
+                        
+                                                    <span class="js-total-cart-price" >0</span>
+                                                <% } %>
+                                                
+                                            </b>
+                                        </div>
 
-                            </div>
 
-                            <div class="info-page" id="info-page">
-                                <p class="font-600 text-22">Cập nhật thông tin cá nhân</p>
-                                <form action="/cap-nhat-thong-tin" method="POST"  name="account_form">
-                                    <table>
-                                        <tbody><tr>
-                                            <td width="150px">Họ tên</td>
-                                            <td>
-                                                <input type="text" name="username" id="username" value="<%= data_user[0].username %>" class="form-input" >
-                                            </td>
-                                        </tr>
-                                     
-                                        <tr>
-                                            <td width="150px">Email</td>
-                                            <td>
-                                                <input type="text" class="form-input" name="email" id="email" value="<%= data_information[0].email %>" disabled>
-                                            </td>
-                                        </tr>
-                            
-                                        <tr>
-                                            <td width="150px">Địa chỉ nhà</td>
-                                            <td>
-                                                <input type="text" name="address" id="address" value="<%= data_information[0].address %>"  class="form-input">
-                                            </td>
-                                        </tr>
+                                        <% if(data_bill[0].trang_thai == "Chờ xác nhận"){ %>
+                                            <div class="clearfix cart-button-buy">
+                                                <a href="javascript:void(0)">  <button  class="w-100 js-send-cart font-weight-bold text-18" style="background-color:#6c757d"> CHỜ XÁC NHẬN </button></a>    
+                                            </div>
+                                       <% } %>
+                                        <% if(data_bill[0].trang_thai == "Đang giao hàng"){ %>
+                                            <div class="clearfix cart-button-buy">
+                                                <a href="javascript:void(0)" onclick="Xac_nhan_thanh_toan('<%=data_bill[0].ma_hoa_don %>')">  <button  class="w-100 js-send-cart font-weight-bold text-18" > XÁC NHẬN THANH TOÁN </button></a>    
+                                            </div>
+                                       <% }if(data_bill[0].trang_thai == "Đã thanh toán"){ %>
+                                            <div class="clearfix cart-button-buy">
+                                                <a href="javascript:void(0)">  <button  class="w-100 js-send-cart font-weight-bold text-18" style="background-color:#6c757d"> ĐÃ THANH TOÁN </button></a>    
+                                            </div>
+                                       <% } %>
+                                       
                                         
-                                        <tr>
-                                            <td width="150px">Tỉnh/Thành Phố</td>
-                                            <td>
-                                                <select name="province" onchange="getProvince(this.value);" class="form-input" >
-                                                   
-                                                    <%if(data_information[0].province == ""){ %>
-                                                        <option selected>Chọn thành phố</option>     
-                                                    <% }else{ %> 
-                                                   
-                                                        <option value="<%= data_information[0].province %>" selected><%= data_information[0].province %></option>    
-                                                        <% } %>              
-                                                    
-                                                    <option value="Hà Nội" > Hà Nội </option>
-                                                    
-                                                    <option value="TP HCM"> TP HCM </option>
-                                                    
-                                                    <option value="Hải Phòng"> Hải Phòng </option>
-                                                    
-                                                    <option value="Đà Nẵng"> Đà Nẵng </option>
-                                                    
-                                                    <option value="An Giang"> An Giang </option>
-                                                    
-                                                    <option value="Bà Rịa-Vũng Tàu"> Bà Rịa-Vũng Tàu </option>
-                                                    
-                                                    <option value="Bình Dương"> Bình Dương </option>
-                                                    
-                                                    <option value="Bình Phước"> Bình Phước </option>
-                                                    
-                                                    <option value="Bình Thuận"> Bình Thuận </option>
-                                                    
-                                                    <option value="Bình Định"> Bình Định </option>
-                                                    
-                                                    <option value="Bạc Liêu"> Bạc Liêu </option>
-                                                    
-                                                    <option value="Bắc Giang"> Bắc Giang </option>
-                                                    
-                                                    <option value="Bắc Kạn"> Bắc Kạn </option>
-                                                    
-                                                    <option value="Bắc Ninh"> Bắc Ninh </option>
-                                                    
-                                                    <option value="Bến Tre"> Bến Tre </option>
-                                                    
-                                                    <option value="Cao Bằng"> Cao Bằng </option>
-                                                    
-                                                    <option value="Cà Mau"> Cà Mau </option>
-                                                    
-                                                    <option value="Cần Thơ"> Cần Thơ </option>
-                                                    
-                                                    <option value="Gia Lai"> Gia Lai </option>
-                                                    
-                                                    <option value="Hà Giang"> Hà Giang </option>
-                                                    
-                                                    <option value="Hà Nam"> Hà Nam </option>
-                                                    
-                                                    <option value="Hà Tĩnh"> Hà Tĩnh </option>
-                                                    
-                                                    <option value="Hòa Bình"> Hòa Bình </option>
-                                                    
-                                                    <option value="Hải Dương"> Hải Dương </option>
-                                                    
-                                                    <option value="Hậu Giang"> Hậu Giang </option>
-                                                    
-                                                    <option value="Hưng Yên"> Hưng Yên </option>
-                                                    
-                                                    <option value="Khánh Hòa"> Khánh Hòa </option>
-                                                    
-                                                    <option value="Kiên Giang"> Kiên Giang </option>
-                                                    
-                                                    <option value="Kon Tum"> Kon Tum </option>
-                                                    
-                                                    <option value="Lai Châu"> Lai Châu </option>
-                                                    
-                                                    <option value="Lào Cai"> Lào Cai </option>
-                                                    
-                                                    <option value="Lâm Đồng"> Lâm Đồng </option>
-                                                    
-                                                    <option value="Lạng Sơn"> Lạng Sơn </option>
-                                                    
-                                                    <option value="Long An"> Long An </option>
-                                                    
-                                                    <option value="Nam Định"> Nam Định </option>
-                                                    
-                                                    <option value="Nghệ An"> Nghệ An </option>
-                                                    
-                                                    <option value="Ninh Bình"> Ninh Bình </option>
-                                                    
-                                                    <option value="Ninh Thuận"> Ninh Thuận </option>
-                                                    
-                                                    <option value="Phú Thọ"> Phú Thọ </option>
-                                                    
-                                                    <option value="Phú Yên"> Phú Yên </option>
-                                                    
-                                                    <option value="Quảng Bình"> Quảng Bình </option>
-                                                    
-                                                    <option value="Quảng Nam"> Quảng Nam </option>
-                                                    
-                                                    <option value="Quảng Ngãi"> Quảng Ngãi </option>
-                                                    
-                                                    <option value="Quảng Ninh"> Quảng Ninh </option>
-                                                    
-                                                    <option value="Quảng Trị"> Quảng Trị </option>
-                                                    
-                                                    <option value="Sóc Trăng"> Sóc Trăng </option>
-                                                    
-                                                    <option value="Sơn La"> Sơn La </option>
-                                                    
-                                                    <option value="Tây Ninh"> Tây Ninh </option>
-                                                    
-                                                    <option value="Thanh Hóa"> Thanh Hóa </option>
-                                                    
-                                                    <option value="Thái Bình"> Thái Bình </option>
-                                                    
-                                                    <option value="Thái Nguyên"> Thái Nguyên </option>
-                                                    
-                                                    <option value="Thừa Thiên-Huế"> Thừa Thiên-Huế </option>
-                                                    
-                                                    <option value="Tiền Giang"> Tiền Giang </option>
-                                                    
-                                                    <option value="Trà Vinh"> Trà Vinh </option>
-                                                    
-                                                    <option value="Tuyên Quang"> Tuyên Quang </option>
-                                                    
-                                                    <option value="Vĩnh Long"> Vĩnh Long </option>
-                                                    
-                                                    <option value="Vĩnh Phúc"> Vĩnh Phúc </option>
-                                                    
-                                                    <option value="Yên Bái"> Yên Bái </option>
-                                                    
-                                                    <option value="Đắk Lắk"> Đắk Lắk </option>
-                                                    
-                                                    <option value="Đồng Nai"> Đồng Nai </option>
-                                                    
-                                                    <option value="Đồng Tháp"> Đồng Tháp </option>
-                                                    
-                                                    <option value="Điện Biên"> Điện Biên </option>
-                                                    
-                                                    <option value="Đăk Nông"> Đăk Nông </option>
-                                                    
-                                                </select>
-                                            </td>
-                                        </tr>
+                                    </div>
+                                </div>
                             
-                                        <tr>
-                                            <td width="150px">Điện thoại di động</td>
-                                            <td>
-                                                <input type="text" name="phone" id="phone" value="<%= data_information[0].phone %>" class="form-input">
-                                            </td>
-                                        </tr>
-                                        
-                                        <tr>
-                                            <td width="150px"></td>
-                                            <td>
-                                                <input type="hidden" name="update" value="yes">
-                                                <button type="submit" class="btn-submit bg-green" style="color: #fff;border: 0;height: 40px;max-width: 200px;width: 100%;border-radius: 5px;margin: 10px 0 0 0;">THAY ĐỔI</button>
-                                            </td>
-                                        </tr>
-                                    </tbody></table>
-                                </form>
-                            </div>
-
-                            <div class="change-password" id="change-password">
-                                <p class="font-600 text-22 mb-2">Thay đổi mật khẩu</p>
-                                <form action="/doi-mat-khau" method="POST"  name="account_form">
-                                    <table>
-                                        <tbody><tr>
-                                            <td width="150px">Mật khẩu cũ</td>
-                                            <td>
-                                                <input type="password" class="form-control" placeholder="Nhập mật khẩu cũ" name="currentpassword" id="currentpassword">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td width="150px">Mật khẩu mới</td>
-                                            <td>
-                                                <input type="password" class="form-control" placeholder="Nhập mật khẩu mới" name="newpassword" id="newpassword">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td width="150px">Nhập lại</td>
-                                            <td>
-                                                <input type="password" class="form-control" placeholder="Nhập lại mật khẩu mới" name="renewpassword" id="renewpassword">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td>
-                                                <input type="hidden" name="update" value="yes">
-                                                <button type="submit" class="btn-submit bg-green" style="color: #fff;border: 0;height: 40px;max-width: 200px;width: 100%;border-radius: 5px;margin: 10px 0 0 0;">CẬP NHẬT</button>
-                                            </td>
-                                        </tr>
-                                    </tbody></table>
-                                </form>
-                            </div>
-
-
                         </div>
-                    </div>
+                        <script type="text/javascript">
+
+                            function Xac_nhan_thanh_toan(ma_hoa_don)  {
+                   
+                                 var result = confirm("Xác nhận thanh toán? ");
+                   
+                                 if(result)  {
+                                    location.href = "/xac_nhan_thanh_toan?ma_hoa_don="+ma_hoa_don;
+                                    //  alert("OK Next lesson!");
+                                 } else {
+                                     
+                                 }
+                            }
+                         </script>
+                    
 
                 </div>
-            </div>
+            
         </main>
 
         <footer>
