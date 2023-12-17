@@ -227,7 +227,6 @@ router.get('/quan-ly', async (req, res) => {
     const data_user = await dataModel.getDataUsers(req.session.email, req.session.password);
     let data_bill = await dataModel.getAllBill("Chờ xác nhận");
     let data_bill_dang_giao = await dataModel.getAllBill("Đang giao hàng");
-    
     let count_bill_chua_xac_nhan = await dataModel.count_bill_chua_xac_nhan();
     let count_bill_dang_giao= await dataModel.count_bill_dang_giao();
     let count_bill_da_thanh_toan= await dataModel.count_bill_da_thanh_toan();
@@ -1367,20 +1366,33 @@ router.post('/thanh-toan', async (req, res) => {
       let ten = req.body.ten;
       let email = req.body.email;
       let phone = req.body.phone;
+      let so_luong_san_pham = req.body.so_luong_san_pham;
       let trang_thai="Chờ xác nhận";
      
-
-    for(var i=0; i< req.body.ma_san_pham.length; i++){
-      let ma_san_pham= req.body.ma_san_pham[i];
-      let so_luong = req.body.amount[i];
-      let ten_san_pham =req.body.ten_san_pham[i];
-      let so_tien = req.body.so_tien[i];
-      let anh = req.body.anh[i];
-
+    if(so_luong_san_pham==1){
+      let ma_san_pham= req.body.ma_san_pham;
+      let so_luong = req.body.amount;
+      let ten_san_pham =req.body.ten_san_pham;
+      let so_tien = req.body.so_tien;
+      let anh = req.body.anh;
       let data_chi_tiet_hoa_don = { ma_san_pham, so_luong, ma_hoa_don, ten_san_pham, anh , so_tien };
-      // console.log(data);
-      await dataModel.createChiTietHoaDon(data_chi_tiet_hoa_don); 
+      // console.log(so_luong_san_pham);
+        await dataModel.createChiTietHoaDon(data_chi_tiet_hoa_don);
     }
+    if(so_luong_san_pham>1){
+      for(var i=0; i< so_luong_san_pham.length; i++){
+        let ma_san_pham= req.body.ma_san_pham[i];
+        let so_luong = req.body.amount[i];
+        let ten_san_pham =req.body.ten_san_pham[i];
+        let so_tien = req.body.so_tien[i];
+        let anh = req.body.anh[i];
+  
+        let data_chi_tiet_hoa_don = { ma_san_pham, so_luong, ma_hoa_don, ten_san_pham, anh , so_tien };
+        // console.log(so_luong_san_pham);
+        await dataModel.createChiTietHoaDon(data_chi_tiet_hoa_don); 
+      }
+    }
+    
 
     let data_hoa_don = { tong_tien, ten, email, phone, ghi_chu, tinh, dia_chi, pay_method, ma_hoa_don, trang_thai };
     await dataModel.createHoaDon(data_hoa_don); 
@@ -1452,8 +1464,14 @@ router.get('/xac-nhan-don-hang', async (req, res) => {
     await dataModel.xacNhanDonHang(ma_hoa_don);
     const data_user = await dataModel.getDataUsers(req.session.email, req.session.password);
     let data_bill = await dataModel.getAllBill();
+
+    let data_bill_dang_giao = await dataModel.getAllBill("Đang giao hàng");
+    let count_bill_chua_xac_nhan = await dataModel.count_bill_chua_xac_nhan();
+    let count_bill_dang_giao= await dataModel.count_bill_dang_giao();
+    let count_bill_da_thanh_toan= await dataModel.count_bill_da_thanh_toan();
+    
     // console.log({data_user});
-    res.render('quan-ly', { data_user,data_bill });
+    res.render('quan-ly', { data_user,data_bill, data_bill_dang_giao, count_bill_chua_xac_nhan, count_bill_dang_giao, count_bill_da_thanh_toan });
 
 
 

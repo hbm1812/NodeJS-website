@@ -591,6 +591,7 @@
                             <div class="text-right text-13 cart-total-price-group">
                                 <% if(typeof count_cart != "undefined" ){ %>
                                 Tổng tiền hàng (<span class="red" id="js-total-quantity"><%= count_cart[0].so_luong %> sản phẩm</span>):
+                                <input type="text" name="so_luong_san_pham" id="so_luong_san_pham" value="<%= count_cart[0].so_luong %>"  style="display: none;">
                                 <% }else{ %>
                                 Tổng tiền hàng (<span class="red" id="js-total-quantity">0 sản phẩm</span>):
                                 <% } %>
